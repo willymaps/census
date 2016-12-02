@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'/>
+<title>Vince Carter</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans|Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
+<style>
+body {
+    margin:0;
+    padding:0;
+    background:#000;
+}
+
+.mapholder {
+    display:block;
+}
+
+#map {
+    width: 100%;
+    height: 680px;
+}
+
+canvas:focus {
+    border:none !important;
+    outline:0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+    background-color: rgba(255,255,255,0); 
+    color:#555;
+    }
+
+.mapboxgl-ctrl-attrib a {
+    color: #555;
+}
+
+#header {
+    font-family:Open Sans, Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#fff;
+    background:rgba(255,255,255,0);
+    padding:10px;
+    margin:auto;
+    display:block;
+    max-width:700px;
+    text-align: center;
+}
+
+#header div {
+    display:inline-block;
+    vertical-align: middle;
+}
+
+#header span {
+    font-size:9px;
+    font-weight:bold;
+    vertical-align: top;
+    margin-left: 2px;
+}
+
+#headtext {
+    margin-left: 60px;
+    font-size:17px;
+    line-height: 23px;
+    max-width:300px;
+}
+
+#logo {
+    position:absolute;
+    width:50px;
+}
+
+#logo img{
+    width:100%;
+}
+
+#desc {
+    margin-top:10px;
+}
+
+/*NOTES*/
+
+.mapnotes {
+  display: block;
+  margin:0 auto;
+  text-align: center;
+  margin-right: 10px;
+  padding-bottom: 10px;
+  color:#555;
+}
+
+.mapnotes p {
+  font-family:Open Sans, Arial, Helvetica, sans-serif;
+  font-size:11px;
+  margin-bottom: -9px;
+}
+
+.mapnotes a {
+    text-decoration: none;
+    color:#555;
+}
+
+/*BUTTONS*/
+
+.toggleholder {
+    margin-right: 20px;
+}
+
+.maptoggles {
+    text-align: center;
+    padding:10px 0;
+    margin:auto;
+    display:block;
+}
+
+.maptoggles div {
+    font-family:Open Sans, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color:#555;
+    display: inline-block;
+    width: 51px;
+/*    height:28px;*/
+    padding: 7px;
+    line-height:12px;
+    border-radius: 2px;
+    background:#fff;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+}
+
+.maptoggles div:hover {
+    opacity:1;
+    background:#d3d3d3;
+    cursor: pointer;
+}
+
+/*LEGEND*/
+
+#legend {
+    text-align: center;
+    display:block;
+    margin: 10px auto;
+}
+
+#legend span {
+    border-radius:10px;
+    background:#FFF;
+    display: inline-block;
+    width:10px;
+    height:10px;
+    margin-right: 5px;
+}
+
+#legend label {
+    vertical-align: top;
+    font-size:10px;
+    margin-right: 10px;
+}
+
+/*NEWLEGEND*/
+
+#newlegend {
+    font-family:Open Sans, Arial, Helvetica, sans-serif;
+    display: block;
+    margin: auto;
+    z-index: 3;
+    background-color: rgba(255,255,255,0);
+    width:125px;
+    padding: 0px;
+    padding-bottom: 25px;
+    font-size: 12px;
+    border-radius:10px;
+      }
+
+.newlegend label {
+    display:block;
+    float:left;
+    height:15px;
+    margin-bottom: 3px;
+    margin-right: 70px;
+    margin-left: 1px;
+    text-align:center;
+    font-size:9px;
+    color:#808080;
+      }
+
+.newlegend span {
+    opacity:0.8;
+    display:block;
+    float:left;
+    height:15px;
+    width:19px;
+    text-align:center;
+    font-size:6px;
+    color:#808080;
+      }
+
+/*CIRCLEGEND*/
+
+#circlegend {
+    font-family:Open Sans, Arial, Helvetica, sans-serif;
+    display: inline-block;
+    margin: auto;
+    width:125px;
+    padding: 0px;
+    margin-right: 20px;
+      }
+
+#circlegend label, #circlegendtwo label {
+    display:inline-block;
+    height:15px;
+    text-align:center;
+    font-size:9px;
+    color:#808080;
+      }
+
+#circlegend span {
+    opacity:0.8;
+    display:block;
+    float:left;
+    border:1px solid #d3d3d3;
+    height:15px;
+    width:19px;
+    border-radius:30px;
+      }
+
+#circlegendtwo {
+    font-family:Open Sans, Arial, Helvetica, sans-serif;
+    display: inline-block;
+    margin: auto;
+    width:125px;
+    padding: 0px;
+      }
+
+#circlegendtwo span {
+    opacity:0.8;
+    display:inline-block;
+    height:5px;
+    width:20px;
+    background:#fb6a4a;
+    margin-left: -3px;
+      }
+
+</style>
+</head>
+<body>
+<div id="header">
+    <div id="logo"><img src="raplogo-01.png" alt=""></div>
+    <div id="headtext">A look at every Vince Carter<span style="color:#888">15</span> shot as a Toronto Raptor</div><br>
+    <div id="legend">
+            <span style="background:#de2d26"></span><label>Made shot</label>
+            <span style="background:#756bb1"></span><label>Missed shot</label>
+    </div>
+    <div id="newlegend" style="display:none">
+        <nav class='newlegend clearfix'>
+          <label id="onelabel">less</label>
+          <label id="twolabel" style="margin-right:0px">more</label>
+          <span id="onespan" style='height:12px;margin-left: 7px;margin-top: 8px;'></span>
+          <span id="twospan" style='height:14px;margin-top: 6px;'></span>
+          <span id="threespan" style='height:16px;margin-top: 4px;'></span>
+          <span id="fourspan" style='height:18px;margin-top: 2px;'></span>
+          <span id="fivespan" style='height:20px;'></span>
+        </nav>
+    </div>
+    <div id='circlegend' style="display:none">
+        <nav class='circlegend clearfix'>
+          <label id="onelabel" style="margin-right: 26px;">less shots</label>
+          <label id="twolabel" style="margin-right:0px">more shots</label>
+          <span style='width:12px;height:12px;margin-left: 7px;margin-top: 8px;'></span>
+          <span style='width:14px;height:14px;margin-top: 6px;'></span>
+          <span style='width:16px;height:16px;margin-top: 4px;'></span>
+          <span style='width:18px;height:18px;margin-top: 2px;'></span>
+          <span style='height:20px;'></span>
+        </nav>
+    </div>
+    <div id='circlegendtwo' style="display:none">
+        <nav class='circlegendtwo clearfix'>
+          <label id="onelabel" style="margin-right: 46px;">low %</label>
+          <label id="twolabel" style="margin-right:0px">high %</label>
+          <span style="opacity:0.2"></span>
+          <span style="opacity:0.4"></span>
+          <span style="opacity:0.6"></span>
+          <span style="opacity:0.8"></span>
+          <span style="opacity:1"></span>
+        </nav>
+    </div>
+    <br>
+    <div class="toggleholder">
+        <div id="desc" style="max-width:220px">Vince Carter was well known for his dunking abilities, but he was an effective player across the court.</div><br>
+        <div class="maptoggles">
+            <div id="mapbutton" onclick="btnClickOne()" data-id="madeshots">SHOTS MADE</div>
+            <div id="mapbutton" onclick="btnClickTwo()" data-id="missedshots">SHOTS MISSED</div>
+            <div id="mapbutton" onclick="btnClickThree()" data-id="percentmade">PER CENT MADE</div>
+        </div>
+    </div>
+    <div class="toggleholder">
+        <div id="desc" style="max-width:280px">Compared to some other notable Toronto Raptors, Vince Carter was one of the most diverse players of the group.</div><br>
+        <div class="maptoggles">
+            <div id="mapbutton" onclick="btnClickFour()" data-id="vince">VINCE CARTER</div>
+            <div id="mapbutton" onclick="btnClickFive()" data-id="lowry">KYLE LOWRY</div>
+            <div id="mapbutton" onclick="btnClickSix()" data-id="derozan">DEMAR DEROZAN</div>
+            <div id="mapbutton" onclick="btnClickSeven()" data-id="bosh">CHRIS BOSH</div>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="mapholder">
+    <div id='map'></div>
+</div>
+<div class="mapnotes">
+  <p><strong>Note:</strong> One area made closest to the net was excluded from the 'per cent made' calculation because of the large difference in total shots taken compared with the rest of the court. All player shots are during their time as a Toronto Raptor. Lowry and DeRozan shots are as of 15'-16' season.</p>
+  <p><strong>Source:</strong> NBA, ColorBrewer, Mapbox</p>
+  <p><strong>By:</strong> <a href="http://www.mapto.ca/about-1/" target="blank">Bettermaps</a></p>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoid2lsbGlhbWJlbmRhdmlzIiwiYSI6IlVrb3BGVzQifQ.jeHxDCnpXXvAXKfAFEYG-A';
+
+var bounds = [
+    [-0.004, 0.007], // Southwest coordinates
+    [0.004, 0.003]  // Northeast coordinates
+];
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/empty-v8',
+    center: [-0.0005, 0.002],
+    zoom: 17,
+    pitch: 50,
+    bearing: 90
+    // maxBounds: bounds
+});
+
+map.scrollZoom.disable();
+
+map.on('load', function() {
+
+// NET
+
+    map.addSource("netData", {
+        'type': 'geojson',
+        'data': 'net.geojson'
+    });
+
+    map.addLayer({
+        'id': 'net',
+        'type': 'fill-extrusion',
+        'source': 'netData',
+        'paint': {
+            'fill-extrusion-color': {
+                'property': 'color',
+                'type': 'identity'
+            },
+            'fill-extrusion-height': {
+                'property': 'elevation',
+                'type': 'identity'
+            },
+            'fill-extrusion-base': {
+                'property': 'frombase',
+                'type': 'identity'
+            }
+        }
+    });
+
+// COURT OUTLINE
+
+    map.addSource('court', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.6kevndwh'
+    });
+    map.addLayer({
+        "id": "court",
+        "type": "line",
+        "source": "court",
+        "source-layer": "courtbounds-9hbb7f",
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#fff",
+            "line-width": 1.5
+        }
+    });
+
+// PLAYER SHOTS
+
+    // CARTER
+    map.addSource('vince', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.a6xtpgmm'
+    });
+    map.addLayer({
+        "id": "vince",
+        "type": "circle",
+        "source": "vince",
+        "source-layer": "vince_carter-74uplm",
+        "paint": {
+            "circle-radius": 2.2,
+            "circle-color": {
+                "property": "Field11",
+                "type": "categorical",
+                "stops": [
+                    ["Made Shot", "#de2d26"],
+                    ["Missed Shot", "#756bb1"]
+                ]
+            }
+        }
+    });
+
+    // LOWRY
+    map.addSource('lowry', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.3t4eh3uy'
+    });
+    map.addLayer({
+        "id": "lowry",
+        "type": "circle",
+        "source": "lowry",
+        "source-layer": "kyle_lowry-11bnwq",
+        'layout': {
+            'visibility': 'none'
+        },
+        "paint": {
+            "circle-radius": 2.2,
+            "circle-color": {
+                "property": "Field11",
+                "type": "categorical",
+                "stops": [
+                    ["Made Shot", "#de2d26"],
+                    ["Missed Shot", "#756bb1"]
+                ]
+            }
+        }
+    });
+
+    // DEROZAN
+    map.addSource('derozan', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.5fq3isjq'
+    });
+    map.addLayer({
+        "id": "derozan",
+        "type": "circle",
+        "source": "derozan",
+        "source-layer": "derozan-3gjam7",
+        'layout': {
+            'visibility': 'none'
+        },
+        "paint": {
+            "circle-radius": 2.2,
+            "circle-color": {
+                "property": "Field11",
+                "type": "categorical",
+                "stops": [
+                    ["Made Shot", "#de2d26"],
+                    ["Missed Shot", "#756bb1"]
+                ]
+            }
+        }
+    });
+
+    // BOSH
+    map.addSource('bosh', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.6p6jp4di'
+    });
+    map.addLayer({
+        "id": "bosh",
+        "type": "circle",
+        "source": "bosh",
+        "source-layer": "chris_bosh-9n74qr",
+        'layout': {
+            'visibility': 'none'
+        },
+        "paint": {
+            "circle-radius": 2.2,
+            "circle-color": {
+                "property": "Field11",
+                "type": "categorical",
+                "stops": [
+                    ["Made Shot", "#de2d26"],
+                    ["Missed Shot", "#756bb1"]
+                ]
+            }
+        }
+    });
+
+
+// 3D SHOTS
+
+    map.addSource('madeshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.6p9kq546'
+    });
+
+    map.addLayer({
+        "id": "madeshots",
+        "type": "fill-extrusion",
+        "source": "madeshots",
+        "source-layer": "vince_madegrid-cwzghx",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'fill-extrusion-color': {
+                "property": "COUNT",
+                "type": "interval",
+                "stops": [
+                    [1, "#fee5d9"],
+                    [2, "#fcae91"],
+                    [3, "#fb6a4a"],
+                    [4, "#de2d26"],
+                    [5, "#a50f15"]
+                ]
+            },
+            'fill-extrusion-height': {
+                'property': 'height',
+                'type': 'identity'
+            },
+            'fill-extrusion-opacity': 0.9
+        }
+    });
+
+    map.addSource('missedshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.c3hwlyky'
+    });
+
+    map.addLayer({
+        "id": "missedshots",
+        "type": "fill-extrusion",
+        "source": "missedshots",
+        "source-layer": "vince_missedgrid-4c417j",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'fill-extrusion-color': {
+                "property": "COUNT",
+                "type": "interval",
+                "stops": [
+                    [1, "#f2f0f7"],
+                    [2, "#cbc9e2"],
+                    [3, "#9e9ac8"],
+                    [4, "#756bb1"],
+                    [5, "#54278f"]
+                ]
+            },
+            'fill-extrusion-height': {
+                'property': 'height',
+                'type': 'identity'
+            },
+            'fill-extrusion-opacity': 0.9
+        }
+    });
+
+
+// PERCENT MADE
+
+    map.addSource('percentmade', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.2txrrssa'
+    });
+
+    map.addLayer({
+        "id": "percentmade",
+        "type": "circle",
+        "source": "percentmade",
+        "source-layer": "vince_percentmade_edit-9y9jbd",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            "circle-radius": {
+                'property': "total",
+                'type': "identity"
+            },
+            "circle-color": "#fb6a4a",
+            "circle-opacity": {
+                "property": "percent",
+                "type": "identity"
+            }
+        }
+    });
+});
+
+$('.maptoggles div').click(function() {
+  var data = $(this).attr('data-id');
+    map.setLayoutProperty('missedshots', 'visibility', 'none');
+    map.setLayoutProperty('vince', 'visibility', 'none');
+    map.setLayoutProperty('madeshots', 'visibility', 'none');
+    map.setLayoutProperty('percentmade', 'visibility', 'none');
+    map.setLayoutProperty('lowry', 'visibility', 'none');
+    map.setLayoutProperty('derozan', 'visibility', 'none');
+    map.setLayoutProperty('bosh', 'visibility', 'none');
+
+    map.setLayoutProperty(data, 'visibility', 'visible');
+
+    if (data === 'madeshots') {
+        $('#newlegend').css('display', 'block');
+            $('#onespan').css('background', '#fee5d9');
+            $('#twospan').css('background', '#fdc3a7');
+            $('#threespan').css('background', '#fb6a4a');
+            $('#fourspan').css('background', '#de2d26');
+            $('#fivespan').css('background', '#a50f15');
+
+        $('#legend').css('display', 'none');
+        $('#circlegend').css('display', 'none');
+        $('#circlegendtwo').css('display', 'none');
+
+        map.flyTo({
+            center: [0, 0.001],
+            zoom: 17.3,
+            bearing: 180,
+            pitch: 40,
+            speed: 0.1
+        });
+    } else if (data === 'missedshots') {
+        $('#newlegend').css('display', 'block');
+            $('#onespan').css('background', '#f2f0f7');
+            $('#twospan').css('background', '#cbc9e2');
+            $('#threespan').css('background', '#9e9ac8');
+            $('#fourspan').css('background', '#756bb1');
+            $('#fivespan').css('background', '#54278f');
+
+        $('#legend').css('display', 'none');
+        $('#circlegend').css('display', 'none');
+        $('#circlegendtwo').css('display', 'none');
+
+        map.flyTo({
+            center: [0, 0.001],
+            zoom: 17.3,
+            bearing: 180,
+            pitch: 40,
+            speed: 0.1
+        });
+    } else if (data === 'percentmade') {
+        $('#legend').css('display', 'none');
+        $('#newlegend').css('display', 'none');
+        $('#circlegend').css('display', 'inline-block');
+        $('#circlegendtwo').css('display', 'inline-block');
+
+        map.flyTo({
+            center: [0, 0.001],
+            zoom: 17.2,
+            bearing: 180,
+            pitch: 2,
+            speed: 0.1
+        });
+    } else {
+        $('#legend').css('display', 'block');
+        $('#legend').css('margin-bottom', '-10px');
+        $('#newlegend').css('display', 'none');
+        $('#circlegend').css('display', 'none');
+        $('#circlegendtwo').css('display', 'none');
+
+        map.flyTo({
+            center: [0, 0.001],
+            zoom: 17.2,
+            bearing: 180,
+            pitch: 20,
+            speed: 0.1
+        });
+    }
+    return false;
+});
+
+</script>
+
+</body>
+</html>
