@@ -2,7 +2,7 @@
 
 <strong>A look at every Vince Carter shot as a Toronto Raptor.</strong>
 
-This is an experiment in combining the NBA stats API and capabilities of Mapbox GL and its extrusion option.
+This is an experiment in combining the NBA stats API and the capabilities of Mapbox GL and its extrusion option.
 Link to project: https://willymaps.github.io/cartershots/
 
 ![screencap](http://i.imgur.com/XmH6Oxt.jpg)
