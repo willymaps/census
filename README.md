@@ -7,7 +7,7 @@ Link to project: https://willymaps.github.io/cartershots/
 
 ![screencap](http://i.imgur.com/xhVz6Yk.jpg)
 
-To build this we used QGIS to build the court/net polygons and binned the shots using the MMQGIS plugin.
+To create this we used QGIS to build the court/net polygons and binned the shots using the MMQGIS plugin.
 
 Great tutorial on shot maps/court design: http://savvastjortjoglou.com/nba-shot-sharts.html
 
