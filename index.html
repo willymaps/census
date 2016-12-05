@@ -8,10 +8,12 @@
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
 <style>
+
 body {
     margin:0;
     padding:0;
     background:#000;
+    -webkit-text-size-adjust: 100%;
 }
 
 .mapholder {
@@ -20,7 +22,7 @@ body {
 
 #map {
     width: 100%;
-    height: 680px;
+    height: 650px;
 }
 
 canvas:focus {
@@ -47,7 +49,7 @@ canvas:focus {
     padding:10px;
     margin:auto;
     display:block;
-    max-width:700px;
+    max-width:550px;
     text-align: center;
 }
 
@@ -65,9 +67,10 @@ canvas:focus {
 
 #headtext {
     margin-left: 60px;
-    font-size:17px;
+    font-size: 20px;
     line-height: 23px;
-    max-width:300px;
+    max-width: 186px;
+    margin-bottom: 10px;
 }
 
 #logo {
@@ -80,7 +83,8 @@ canvas:focus {
 }
 
 #desc {
-    margin-top:10px;
+    margin-top:5px;
+    max-width: 404px;
 }
 
 /*NOTES*/
@@ -107,24 +111,19 @@ canvas:focus {
 
 /*BUTTONS*/
 
-.toggleholder {
-    margin-right: 20px;
-}
-
-.maptoggles {
+.shottoggles, .playertoggles {
     text-align: center;
     padding:10px 0;
     margin:auto;
     display:block;
 }
 
-.maptoggles div {
+.shottoggles div, .playertoggles div {
     font-family:Open Sans, Arial, Helvetica, sans-serif;
     font-size: 10px;
     color:#555;
     display: inline-block;
-    width: 51px;
-/*    height:28px;*/
+    width: 85px;
     padding: 7px;
     line-height:12px;
     border-radius: 2px;
@@ -133,10 +132,19 @@ canvas:focus {
     box-shadow: 0 2px 4px rgba(255,255,255,0.1);
 }
 
-.maptoggles div:hover {
+.shottoggles div:hover, .playertoggles div:hover {
     opacity:1;
     background:#d3d3d3;
     cursor: pointer;
+}
+
+.shottoggles div.active, .playertoggles div.active {
+    opacity:1;
+    background:#000;
+    cursor: pointer;
+    color:#FFF;
+    border:1px solid #555;
+    pointer-events:none;
 }
 
 /*LEGEND*/
@@ -246,11 +254,56 @@ canvas:focus {
     margin-left: -3px;
       }
 
+/*CHART*/
+
+.chartholder {
+  font-family: Open Sans, Arial, Helvetica, sans-serif;
+  font-size:10px;
+  width: 100%;
+  max-width: 415px;
+  display: block;
+  margin:auto;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.chartholder div {
+    display:inline-block;
+    text-align: center;
+    width:24%;
+}
+
+.years {
+    font-family: Open Sans, Arial, Helvetica, sans-serif;
+    border:0px;
+    color:#999;
+    margin-bottom: 3px;
+}
+
+.numbers {
+  font-size:12px;
+  font-weight:bold;
+  color:#999;
+  border-right:1px dashed #888888;
+}
+
+@media (max-width:550px) {
+    #map {
+        height:300px;
+    }
+    #circlegendtwo {
+        width: 107px;
+    }
+    .shottoggles div, .playertoggles div {
+        width:51px;
+    }
+}
+
 </style>
 </head>
 <body>
 <div id="header">
-    <div id="logo"><img src="raplogo-01.png" alt=""></div>
+    <div id="logo"><img src="vince-01.png" alt=""></div>
     <div id="headtext">A look at every Vince Carter<span style="color:#888">15</span> shot as a Toronto Raptor</div><br>
     <div id="legend">
             <span style="background:#de2d26"></span><label>Made shot</label>
@@ -289,33 +342,43 @@ canvas:focus {
           <span style="opacity:1"></span>
         </nav>
     </div>
-    <br>
     <div class="toggleholder">
-        <div id="desc" style="max-width:220px">Vince Carter was well known for his dunking abilities, but he was an effective player across the court.</div><br>
-        <div class="maptoggles">
-            <div id="mapbutton" onclick="btnClickOne()" data-id="madeshots">SHOTS MADE</div>
-            <div id="mapbutton" onclick="btnClickTwo()" data-id="missedshots">SHOTS MISSED</div>
-            <div id="mapbutton" onclick="btnClickThree()" data-id="percentmade">PER CENT MADE</div>
+        <div id="desc">Choose a player:</div><br>
+        <div class="playertoggles">
+            <div id="playerbtn" data-id="vince" class="active">VINCE CARTER</div>
+            <div id="playerbtn" data-id="lowry">KYLE LOWRY</div>
+            <div id="playerbtn" data-id="derozan">DEMAR DEROZAN</div>
+            <div id="playerbtn" data-id="bosh">CHRIS BOSH</div>
         </div>
     </div>
     <div class="toggleholder">
-        <div id="desc" style="max-width:280px">Compared to some other notable Toronto Raptors, Vince Carter was one of the most diverse players of the group.</div><br>
-        <div class="maptoggles">
-            <div id="mapbutton" onclick="btnClickFour()" data-id="vince">VINCE CARTER</div>
-            <div id="mapbutton" onclick="btnClickFive()" data-id="lowry">KYLE LOWRY</div>
-            <div id="mapbutton" onclick="btnClickSix()" data-id="derozan">DEMAR DEROZAN</div>
-            <div id="mapbutton" onclick="btnClickSeven()" data-id="bosh">CHRIS BOSH</div>
+        <div id="desc">Compared to some other notable Toronto Raptors, Vince Carter was one of the most diverse players of the group.</div><br>
+        <div class="shottoggles">
+            <div id="mapbtn" data-id="shots" class="active">EVERY SHOT</div>
+            <div id="mapbtn" data-id="madeshots">SHOTS MADE</div>
+            <div id="mapbtn" data-id="missedshots">SHOTS MISSED</div>
+            <div id="mapbtn" data-id="percentmade">PER CENT MADE</div>
         </div>
     </div>
+    <div class="chartholder">
+        <div class="years">SEASONS</div>
+        <div class="years">TOTAL GAMES</div>
+        <div class="years">FIELD GOAL %</div>
+        <div class="years">POINTS PER GAME</div>
+        <div id="totyears" class="numbers">98'-05'</div>
+        <div id="totgames" class="numbers">403</div>
+        <div id="totperc" class="numbers">.446</div>
+        <div id="totpoints" class="numbers" style="border-right:0px">23.4</div>
     </div>
 </div>
 <div class="mapholder">
     <div id='map'></div>
 </div>
 <div class="mapnotes">
-  <p><strong>Note:</strong> One area made closest to the net was excluded from the 'per cent made' calculation because of the large difference in total shots taken compared with the rest of the court. All player shots are during their time as a Toronto Raptor. Lowry and DeRozan shots are as of 15'-16' season.</p>
-  <p><strong>Source:</strong> NBA, ColorBrewer, Mapbox</p>
+  <p><strong>Note:</strong> One area closest to the net was excluded from the 'per cent made' calculation because of the large difference in total shots taken compared with the rest of the court. All player shots are during their time as a Toronto Raptor. Lowry and DeRozan shots are as of 15'-16' season.</p>
+  <p><strong>Source:</strong> NBA, ColorBrewer, Mapbox, basketball-reference</p>
   <p><strong>By:</strong> <a href="http://www.mapto.ca/about-1/" target="blank">Bettermaps</a></p>
+  <p><strong>Git:</strong> <a href="http://www.mapto.ca/about-1/" target="blank">Bettermaps</a></p>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
@@ -323,8 +386,8 @@ canvas:focus {
 mapboxgl.accessToken = 'pk.eyJ1Ijoid2lsbGlhbWJlbmRhdmlzIiwiYSI6IlVrb3BGVzQifQ.jeHxDCnpXXvAXKfAFEYG-A';
 
 var bounds = [
-    [-0.004, 0.007], // Southwest coordinates
-    [0.004, 0.003]  // Northeast coordinates
+    [-0.00515, -0.01216], // Southwest coordinates
+    [0.00674, 0.00532]  // Northeast coordinates
 ];
 
 var map = new mapboxgl.Map({
@@ -332,16 +395,25 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/empty-v8',
     center: [-0.0005, 0.002],
     zoom: 17,
+    minZoom:15.6,
+    maxZoom:18,
     pitch: 50,
-    bearing: 90
-    // maxBounds: bounds
+    bearing: 90,
+    maxBounds: bounds
 });
 
 map.scrollZoom.disable();
 
-map.on('load', function() {
+window.addEventListener('load', function(event){
+    var width = document.documentElement.clientWidth;
+    if (width > 550) {
+        map.setZoom(17);
+    }  else {
+        map.setZoom(16);
+    }
+});
 
-// NET
+map.on('load', function() {
 
     map.addSource("netData", {
         'type': 'geojson',
@@ -392,125 +464,289 @@ map.on('load', function() {
 // PLAYER SHOTS
 
     // CARTER
-    map.addSource('vince', {
+    map.addSource('vinceshots', {
         type: 'vector',
         url: 'mapbox://williambendavis.a6xtpgmm'
     });
     map.addLayer({
-        "id": "vince",
+        "id": "vinceshots",
         "type": "circle",
-        "source": "vince",
+        "source": "vinceshots",
         "source-layer": "vince_carter-74uplm",
-        "paint": {
-            "circle-radius": 2.2,
-            "circle-color": {
-                "property": "Field11",
-                "type": "categorical",
-                "stops": [
-                    ["Made Shot", "#de2d26"],
-                    ["Missed Shot", "#756bb1"]
-                ]
-            }
-        }
+        "paint": styleShots()
     });
 
     // LOWRY
-    map.addSource('lowry', {
+    map.addSource('lowryshots', {
         type: 'vector',
         url: 'mapbox://williambendavis.3t4eh3uy'
     });
     map.addLayer({
-        "id": "lowry",
+        "id": "lowryshots",
         "type": "circle",
-        "source": "lowry",
+        "source": "lowryshots",
         "source-layer": "kyle_lowry-11bnwq",
         'layout': {
             'visibility': 'none'
         },
-        "paint": {
-            "circle-radius": 2.2,
-            "circle-color": {
-                "property": "Field11",
-                "type": "categorical",
-                "stops": [
-                    ["Made Shot", "#de2d26"],
-                    ["Missed Shot", "#756bb1"]
-                ]
-            }
-        }
+        "paint": styleShots()
     });
 
     // DEROZAN
-    map.addSource('derozan', {
+    map.addSource('derozanshots', {
         type: 'vector',
         url: 'mapbox://williambendavis.5fq3isjq'
     });
     map.addLayer({
-        "id": "derozan",
+        "id": "derozanshots",
         "type": "circle",
-        "source": "derozan",
+        "source": "derozanshots",
         "source-layer": "derozan-3gjam7",
         'layout': {
             'visibility': 'none'
         },
-        "paint": {
-            "circle-radius": 2.2,
-            "circle-color": {
-                "property": "Field11",
-                "type": "categorical",
-                "stops": [
-                    ["Made Shot", "#de2d26"],
-                    ["Missed Shot", "#756bb1"]
-                ]
-            }
-        }
+        "paint": styleShots()
     });
 
     // BOSH
-    map.addSource('bosh', {
+    map.addSource('boshshots', {
         type: 'vector',
         url: 'mapbox://williambendavis.6p6jp4di'
     });
     map.addLayer({
-        "id": "bosh",
+        "id": "boshshots",
         "type": "circle",
-        "source": "bosh",
+        "source": "boshshots",
         "source-layer": "chris_bosh-9n74qr",
         'layout': {
             'visibility': 'none'
         },
-        "paint": {
-            "circle-radius": 2.2,
-            "circle-color": {
-                "property": "Field11",
-                "type": "categorical",
-                "stops": [
-                    ["Made Shot", "#de2d26"],
-                    ["Missed Shot", "#756bb1"]
-                ]
-            }
-        }
+        "paint": styleShots()
     });
 
 
 // 3D SHOTS
 
-    map.addSource('madeshots', {
+    // VINCE
+    map.addSource('vincemadeshots', {
         type: 'vector',
-        url: 'mapbox://williambendavis.6p9kq546'
+        url: 'mapbox://williambendavis.53yk63o3'
     });
 
     map.addLayer({
-        "id": "madeshots",
+        "id": "vincemadeshots",
         "type": "fill-extrusion",
-        "source": "madeshots",
-        "source-layer": "vince_madegrid-cwzghx",
+        "source": "vincemadeshots",
+        "source-layer": "vince_madegrid-acxxdj",
         'layout': {
             'visibility': 'none'
         },
-        'paint': {
+        'paint': styleMade()
+    });
+
+    map.addSource('vincemissedshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.17aw5th5'
+    });
+
+    map.addLayer({
+        "id": "vincemissedshots",
+        "type": "fill-extrusion",
+        "source": "vincemissedshots",
+        "source-layer": "vince_missedgrid-09swok",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMissed()
+    });
+
+    // DEROZAN
+    map.addSource('derozanmadeshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.8k50cm1b'
+    });
+
+    map.addLayer({
+        "id": "derozanmadeshots",
+        "type": "fill-extrusion",
+        "source": "derozanmadeshots",
+        "source-layer": "derozan_made_grid-54gnj5",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMade()
+    });
+
+    map.addSource('derozanmissedshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.c0uur62p'
+    });
+
+    map.addLayer({
+        "id": "derozanmissedshots",
+        "type": "fill-extrusion",
+        "source": "derozanmissedshots",
+        "source-layer": "derozan_missed_grid-24nvpu",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMissed()
+    });
+
+    // LOWRY
+    map.addSource('lowrymadeshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.1lb501ka'
+    });
+
+    map.addLayer({
+        "id": "lowrymadeshots",
+        "type": "fill-extrusion",
+        "source": "lowrymadeshots",
+        "source-layer": "lowry_made_grid-96euj6",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMade()
+    });
+
+    map.addSource('lowrymissedshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.2280u3sp'
+    });
+
+    map.addLayer({
+        "id": "lowrymissedshots",
+        "type": "fill-extrusion",
+        "source": "lowrymissedshots",
+        "source-layer": "lowry_missed_grid-d4eqid",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMissed()
+    });
+
+    // BOSH
+    map.addSource('boshmadeshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.1besrtb9'
+    });
+
+    map.addLayer({
+        "id": "boshmadeshots",
+        "type": "fill-extrusion",
+        "source": "boshmadeshots",
+        "source-layer": "bosh_made_grid-29oq08",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMade()
+    });
+
+    map.addSource('boshmissedshots', {
+        type: 'vector',
+        url: 'mapbox://williambendavis.2pxgd4zn'
+    });
+
+    map.addLayer({
+        "id": "boshmissedshots",
+        "type": "fill-extrusion",
+        "source": "boshmissedshots",
+        "source-layer": "bosh_missed_grid-13u2g6",
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': styleMissed()
+    });
+
+// PERCENT MADE
+
+        // CARTER
+        map.addSource('vincepercentmade', {
+            type: 'vector',
+            url: 'mapbox://williambendavis.2txrrssa'
+        });
+
+        map.addLayer({
+            "id": "vincepercentmade",
+            "type": "circle",
+            "source": "vincepercentmade",
+            "source-layer": "vince_percentmade_edit-9y9jbd",
+            'layout': {
+                'visibility': 'none'
+            },
+            'paint': stylePercent()
+        });
+
+        // LOWRY
+        map.addSource('lowrypercentmade', {
+            type: 'vector',
+            url: 'mapbox://williambendavis.8gi20rbx'
+        });
+
+        map.addLayer({
+            "id": "lowrypercentmade",
+            "type": "circle",
+            "source": "lowrypercentmade",
+            "source-layer": "lowry_percent-adubsm",
+            'layout': {
+                'visibility': 'none'
+            },
+            'paint': stylePercent()
+        });
+
+        // DEROZAN
+        map.addSource('derozanpercentmade', {
+            type: 'vector',
+            url: 'mapbox://williambendavis.0og8ktgq'
+        });
+
+        map.addLayer({
+            "id": "derozanpercentmade",
+            "type": "circle",
+            "source": "derozanpercentmade",
+            "source-layer": "derozanpercentedit-aps9wo",
+            'layout': {
+                'visibility': 'none'
+            },
+            'paint': stylePercent()
+        });
+
+        // BOSH
+        map.addSource('boshpercentmade', {
+            type: 'vector',
+            url: 'mapbox://williambendavis.d6hztebd'
+        });
+
+        map.addLayer({
+            "id": "boshpercentmade",
+            "type": "circle",
+            "source": "boshpercentmade",
+            "source-layer": "boshpercentedit-bhgn0c",
+            'layout': {
+                'visibility': 'none'
+            },
+            'paint': stylePercent()
+        });
+
+    function styleShots() {
+        return {
+            "circle-radius": 2.2,
+            "circle-color": {
+                "property": "Field11",
+                "type": "categorical",
+                "stops": [
+                    ["Made Shot", "#de2d26"],
+                    ["Missed Shot", "#756bb1"]
+                ]
+            }
+        }
+    }
+
+    function styleMade() {
+          return {
             'fill-extrusion-color': {
-                "property": "COUNT",
+                "property": "madecount",
                 "type": "interval",
                 "stops": [
                     [1, "#fee5d9"],
@@ -524,26 +760,14 @@ map.on('load', function() {
                 'property': 'height',
                 'type': 'identity'
             },
-            'fill-extrusion-opacity': 0.9
+            'fill-extrusion-opacity': 0.85
         }
-    });
+      }
 
-    map.addSource('missedshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.c3hwlyky'
-    });
-
-    map.addLayer({
-        "id": "missedshots",
-        "type": "fill-extrusion",
-        "source": "missedshots",
-        "source-layer": "vince_missedgrid-4c417j",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': {
+    function styleMissed() {
+          return {
             'fill-extrusion-color': {
-                "property": "COUNT",
+                "property": "misscount",
                 "type": "interval",
                 "stops": [
                     [1, "#f2f0f7"],
@@ -557,27 +781,12 @@ map.on('load', function() {
                 'property': 'height',
                 'type': 'identity'
             },
-            'fill-extrusion-opacity': 0.9
+            'fill-extrusion-opacity': 0.85
         }
-    });
+      }
 
-
-// PERCENT MADE
-
-    map.addSource('percentmade', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.2txrrssa'
-    });
-
-    map.addLayer({
-        "id": "percentmade",
-        "type": "circle",
-        "source": "percentmade",
-        "source-layer": "vince_percentmade_edit-9y9jbd",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': {
+    function stylePercent() {
+          return {
             "circle-radius": {
                 'property': "total",
                 'type': "identity"
@@ -588,20 +797,66 @@ map.on('load', function() {
                 "type": "identity"
             }
         }
-    });
+      }
+
 });
 
-$('.maptoggles div').click(function() {
-  var data = $(this).attr('data-id');
-    map.setLayoutProperty('missedshots', 'visibility', 'none');
-    map.setLayoutProperty('vince', 'visibility', 'none');
-    map.setLayoutProperty('madeshots', 'visibility', 'none');
-    map.setLayoutProperty('percentmade', 'visibility', 'none');
-    map.setLayoutProperty('lowry', 'visibility', 'none');
-    map.setLayoutProperty('derozan', 'visibility', 'none');
-    map.setLayoutProperty('bosh', 'visibility', 'none');
+$('.playertoggles div').click(function() {
+    clearLayers();
+      $('.playertoggles div').removeClass('active');
+      $(this).addClass('active');
+      var data = $(this).attr('data-id');
 
-    map.setLayoutProperty(data, 'visibility', 'visible');
+          if (data === 'vince') {
+            $('#totyears').html('98&#39-05&#39');
+            $('#totgames').html('403');
+            $('#totperc').html('.446');
+            $('#totpoints').html('23.4');
+          } else if (data === 'lowry') {
+            $('#totyears').html('12&#39-17&#39');
+            $('#totgames').html('312');
+            $('#totperc').html('.418');
+            $('#totpoints').html('17.5');
+          } else if (data === 'derozan') {
+            $('#totyears').html('09&#39-17&#39');
+            $('#totgames').html('539');
+            $('#totperc').html('.444');
+            $('#totpoints').html('18.5');
+          } else {
+            $('#totyears').html('03&#39-10&#39');
+            $('#totgames').html('509');
+            $('#totperc').html('.492');
+            $('#totpoints').html('20.2');
+          }
+
+        $('.shottoggles div').each(function(){
+            var shotData = (data + $(this).attr('data-id'))
+            if($(this).hasClass('active')) {
+                map.setLayoutProperty(shotData, 'visibility', 'visible');
+            }
+        });
+    });
+
+
+$('.shottoggles div').click(function() {
+    clearLayers();
+
+    $('.shottoggles div').removeClass('active');
+    $(this).addClass('active');
+    var data = $(this).attr('data-id');
+        getCamera(data);
+
+        $('.playertoggles div').each(function(index){
+            console.log( index + ": " + $( this ).text() );
+            if ($(this).hasClass('active')) {
+                var shotData = ($(this).attr('data-id') + data)
+                map.setLayoutProperty(shotData, 'visibility', 'visible');
+            }
+        });
+});
+
+function getCamera(data) {
+    var width = document.documentElement.clientWidth;
 
     if (data === 'madeshots') {
         $('#newlegend').css('display', 'block');
@@ -616,8 +871,8 @@ $('.maptoggles div').click(function() {
         $('#circlegendtwo').css('display', 'none');
 
         map.flyTo({
-            center: [0, 0.001],
-            zoom: 17.3,
+            center: [0, 0.0012],
+            zoom: getZoom(width),
             bearing: 180,
             pitch: 40,
             speed: 0.1
@@ -635,8 +890,8 @@ $('.maptoggles div').click(function() {
         $('#circlegendtwo').css('display', 'none');
 
         map.flyTo({
-            center: [0, 0.001],
-            zoom: 17.3,
+            center: [0, 0.0012],
+            zoom: getZoom(width),
             bearing: 180,
             pitch: 40,
             speed: 0.1
@@ -649,28 +904,54 @@ $('.maptoggles div').click(function() {
 
         map.flyTo({
             center: [0, 0.001],
-            zoom: 17.2,
+            zoom: getZoom(width),
             bearing: 180,
             pitch: 2,
             speed: 0.1
         });
     } else {
         $('#legend').css('display', 'block');
-        $('#legend').css('margin-bottom', '-10px');
         $('#newlegend').css('display', 'none');
         $('#circlegend').css('display', 'none');
         $('#circlegendtwo').css('display', 'none');
 
         map.flyTo({
             center: [0, 0.001],
-            zoom: 17.2,
+            zoom: getZoom(width),
             bearing: 180,
             pitch: 20,
             speed: 0.1
         });
     }
     return false;
-});
+
+    function getZoom(width) {
+        if (width > 550) {
+            return 17.2;
+        }  else {
+            return 15.6;
+        }
+    };
+};
+
+function clearLayers() {
+    map.setLayoutProperty('vincemissedshots', 'visibility', 'none');
+    map.setLayoutProperty('vinceshots', 'visibility', 'none');
+    map.setLayoutProperty('vincemadeshots', 'visibility', 'none');
+    map.setLayoutProperty('vincepercentmade', 'visibility', 'none');
+    map.setLayoutProperty('lowrymissedshots', 'visibility', 'none');
+    map.setLayoutProperty('lowryshots', 'visibility', 'none');
+    map.setLayoutProperty('lowrymadeshots', 'visibility', 'none');
+    map.setLayoutProperty('lowrypercentmade', 'visibility', 'none');
+    map.setLayoutProperty('derozanmissedshots', 'visibility', 'none');
+    map.setLayoutProperty('derozanshots', 'visibility', 'none');
+    map.setLayoutProperty('derozanmadeshots', 'visibility', 'none');
+    map.setLayoutProperty('derozanpercentmade', 'visibility', 'none');
+    map.setLayoutProperty('boshmissedshots', 'visibility', 'none');
+    map.setLayoutProperty('boshshots', 'visibility', 'none');
+    map.setLayoutProperty('boshmadeshots', 'visibility', 'none');
+    map.setLayoutProperty('boshpercentmade', 'visibility', 'none');
+}
 
 </script>
 
