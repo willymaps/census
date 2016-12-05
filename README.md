@@ -5,7 +5,7 @@
 This is an experiment in combining the NBA stats API and capabilities of Mapbox GL and its extrusion option.
 Link to project: https://willymaps.github.io/cartershots/
 
-![screencap](http://i.imgur.com/9cc0dcf.jpg)
+![screencap](http://i.imgur.com/XmH6Oxt.jpg)
 
 To build this we used QGIS to build the court/net polygons and binned the shots using the MMQGIS plugin.
 
