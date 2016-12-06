@@ -13,5 +13,7 @@ Great tutorial on shot maps/court design: http://savvastjortjoglou.com/nba-shot-
 
 Some other inspirational shot maps: <a href="http://graphics.latimes.com/kobe-every-shot-ever/" target="blank">L.A. Times</a>, <a href="http://gbrunner.github.io/Courtside-Geography/" target="blank">Gregory Brunner</a>, and a short write-up on <a href="http://googlemapsmania.blogspot.ca/2016/06/maps-from-courtside.html" target="blank">Maps Mania</a>
 
+The godfather: https://twitter.com/kirkgoldsberry
+
 A link to our 'still under construction' site: <a href="http://www.mapto.ca/about-1/" target="blank">Bettermaps</a>
 
