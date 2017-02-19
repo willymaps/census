@@ -3,7 +3,7 @@
 <strong>A look at the 2016 Canadian Census.</strong>
 
 This is an experiment with the Canadian Census and the capabilities of Mapbox GL.
-Link to project: https://willymaps.github.io/cartershots/
+Link to project: https://willymaps.github.io/census/
 
 ![screencap](http://i.imgur.com/mKd587o.png)
 
