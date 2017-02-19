@@ -1,4 +1,4 @@
-# cartershots
+# census
 
 <strong>A look at the 2016 Canadian Census.</strong>
 
