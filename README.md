@@ -5,7 +5,7 @@
 This is an experiment with the Canadian Census and the capabilities of Mapbox GL.
 Link to project: https://willymaps.github.io/cartershots/
 
-![screencap](http://i.imgur.com/xhVz6Yk.jpg)
+![screencap](http://i.imgur.com/mKd587o.png)
 
 To create this we used QGIS.
 
