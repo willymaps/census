@@ -22,7 +22,7 @@ body {
 
 #map {
     width: 100%;
-    height: 650px;
+    height: 850px;
 }
 
 canvas:focus {
@@ -32,14 +32,18 @@ canvas:focus {
     box-shadow: none;
 }
 
-.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+/*.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
     background-color: rgba(255,255,255,0); 
     color:#555;
     }
 
 .mapboxgl-ctrl-attrib a {
     color: #555;
-}
+}*/
+
+.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
+    display: none;
+    }
 
 .mapboxgl-popup {
   max-width: 400px;
@@ -77,7 +81,7 @@ canvas:focus {
     padding:10px;
     margin:auto;
     display:block;
-    max-width:1000px;
+    max-width:500px;
     text-align: center;
 }
 
@@ -132,7 +136,6 @@ canvas:focus {
 .prtoggles div {
     font-family:Open Sans, Arial, Helvetica, sans-serif;
     font-size: 10px;
-    font-weight: bold;
     color:#555;
     display: inline-block;
     width: 100px;
@@ -156,7 +159,7 @@ canvas:focus {
     opacity:1;
     background:#fff;
     cursor: pointer;
-    border:1px solid #555;
+    font-weight: bold;
     pointer-events:none;
 }
 
@@ -241,13 +244,13 @@ canvas:focus {
 
 @media (max-width:550px) {
     #map {
-        height:300px;
+        height:430px;
     }
     #circlegendtwo {
         width: 107px;
     }
     .prtoggles div {
-        width: 130px;
+        width: 100px;
         padding: 10px;
     }
 }
@@ -260,7 +263,7 @@ canvas:focus {
     <div id="desc">
             Percentage change in population (2011-2016)
     </div>
-    <div id='circlegend'>
+<!--     <div id='circlegend'>
             <nav class='circlegend clearfix'>
               <label id="onelabel" style="margin-right: 7px;">small pop.</label>
               <label id="twolabel" style="margin-right:18px">large pop.</label>
@@ -270,17 +273,17 @@ canvas:focus {
               <span style='width:18px;height:18px;margin-top: 2px;'></span>
               <span style='height:20px;'></span>
             </nav>
-        </div>
+        </div> -->
     <div class="toggleholder">
         <div class="prtoggles">
             <div id="prbtn" data-id="all" class="active">ALL</div>
-            <div id="prbtn" data-id="Ontario" style="color:#756BB1">ONTARIO</div>
-            <div id="prbtn" data-id="British Columbia" style="color:#31A354">BRITISH COLUMBIA</div>
-            <div id="prbtn" data-id="Quebec" style="color:#17BECF">QUEBEC</div>
-            <div id="prbtn" data-id="Alberta" style="color:#FF3030">ALBERTA</div>
-            <div id="prbtn" data-id="Prairies" style="color:#FDAE6B">PRAIRIES</div>
-            <div id="prbtn" data-id="Maritimes" style="color:#3182BD">MARITIMES</div>
-            <div id="prbtn" data-id="Territories" style="color:#E377C2">TERRITORIES</div>
+            <div id="prbtn" data-id="Ontario" style="color:#756BB1;background:rgba(117,107,177,0.2)">ONTARIO</div>
+            <div id="prbtn" data-id="British Columbia" style="color:#31A354;background:rgba(49,163,84,0.2)">BRITISH COLUMBIA</div>
+            <div id="prbtn" data-id="Quebec" style="color:#17BECF;background:rgba(23,190,207,0.2)">QUEBEC</div>
+            <div id="prbtn" data-id="Alberta" style="color:#FF3030;background:rgba(255,48,48,0.2)">ALBERTA</div>
+            <div id="prbtn" data-id="Prairies" style="color:#FDAE6B;background:rgba(253,174,107,0.2)">PRAIRIES</div>
+            <div id="prbtn" data-id="Maritimes" style="color:#3182BD;background:rgba(49,130,189,0.2)">MARITIMES</div>
+            <div id="prbtn" data-id="Territories" style="color:#E377C2;background:rgba(227,119,194,0.2)">TERRITORIES</div>
         </div>
     </div>
 </div>
@@ -288,8 +291,8 @@ canvas:focus {
     <div id='map'></div>
 </div>
 <div class="mapnotes">
-  <p><strong>Note:</strong> One area closest to the net was excluded from the 'per cent made' calculation because of the large difference in total shots taken compared with the rest of the court. All player shots are during their time as a Toronto Raptor. Lowry and DeRozan shots are as of 15'-16' season.</p>
-  <p><strong>Source:</strong> NBA, ColorBrewer, Mapbox, basketball-reference</p>
+  <p><strong>Note:</strong></p>
+  <p><strong>Source:</strong> Stats Can</p>
   <p><strong>By:</strong> <a href="http://www.mapto.ca/" target="blank">Bettermaps</a></p>
   <p>Code on <a href="https://github.com/willymaps/cartershots" target="blank">GitHub</a></p>
 </div>
@@ -303,21 +306,35 @@ var bounds = [
     [6.2,2.0]  // Northeast coordinates
 ];
 
+var width = document.documentElement.clientWidth;
+
+function getZoom(width) {
+        if (width > 550) {
+                return 6.5;
+        }  else {
+                return 5.5;
+        }
+    };
+
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/empty-v8',
-    center: [0, 0],
+    center: [3, 0],
+    zoom: getZoom(width),
     minZoom:4,
-    maxZoom:9
+    maxZoom:9,
+    bearing:-90
 });
 
 map.scrollZoom.disable();
+map.dragPan.disable();
 
 map.on('load', function() {
 
-    map.fitBounds(bounds, {
-            padding: 30
-        });
+    // map.fitBounds(bounds, {
+    //         padding: 30,
+    //         bearing:45
+    //     });
 
     // ADD GRID
     map.addSource("gridData", {
@@ -336,7 +353,8 @@ map.on('load', function() {
         "paint": {
             "line-width": 0.5,
             "line-blur": 1,
-            "line-color": "#555"
+            "line-color": "#555",
+            "line-dasharray": [4,6]
         }
     });
 
@@ -354,11 +372,11 @@ map.on('load', function() {
             "text-field": "{name}",
             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
             "text-size": 10,
-            "text-offset": [-0.3, 0 ],
-            "text-anchor": "right"
+            "text-offset": [0, -0.5],
+            "text-anchor": "bottom"
         },
         "paint": {
-            "text-color": "#555"
+            "text-color": "#999"
         }
     });
 
@@ -412,10 +430,10 @@ map.on('load', function() {
         "layout": {
             "visibility": "none",
             "text-field": "{name}",
-            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-font": ["Open Sans Regular", "Arial Unicode MS Bold"],
             "text-size": 10,
-            "text-offset": [0, 1 ],
-            "text-anchor": "top"
+            "text-offset": [1.2, 0],
+            "text-anchor": "left"
         },
         "paint": {
             "text-color": "#555"
@@ -446,26 +464,19 @@ map.on('load', function() {
                     
     //             ];
 
-    function calcCount(p) {
-        var scaleFactor = 0.05;
-        var area = p * scaleFactor;
-          return Math.sqrt(area/Math.PI)*2;
-    }
-
     function stylePop() {
         return {
             "circle-radius": {
-                    property: 'pop_2016',
-                    base: 2,
-                    type: 'interval',
-                    stops: [
-                        [10000, 4],
-                        [50000, 6],
-                        [100000, 8],
-                        [500000, 10],
-                        [1000000, 12],
+                base: 1.75,
+                stops: [
+                    [4, 2.3],
+                    [10, 12]
                     ]
-                },
+            },
+                        // [50000, 4],
+                        // [100000, 5],
+                        // [500000, 6],
+                        // [1000000, 7]
             "circle-opacity": 0.85,
             "circle-stroke-color": "#FFFFFF",
             "circle-stroke-width": 0.2,
@@ -564,7 +575,7 @@ map.on('load', function() {
                 
             },
             'fill-extrusion-height': {
-                'property': 'whole_chg',
+                'property': 'whole_perc',
                 'type': 'identity'
             },
             'fill-extrusion-opacity': 0.5
@@ -630,8 +641,9 @@ map.on('click', function(e) {
         });
     } else {
         map.setLayoutProperty('poplabels', 'visibility', 'none');
-        map.fitBounds(bounds, {
-            padding: 30
+        map.flyTo({
+            center: [3, 0],
+            zoom:getZoom(width)
         });
     }
 });
@@ -640,6 +652,14 @@ $('.prtoggles div').click(function() {
 
       var width = document.documentElement.clientWidth;
 
+      function getZoom(width) {
+            if (width > 550) {
+                    return 7;
+            }  else {
+                    return 6;
+            }
+        };
+
 
       $('.prtoggles div').removeClass('active');
       $(this).addClass('active');
@@ -647,47 +667,22 @@ $('.prtoggles div').click(function() {
 
       if (data === 'all') {
         $('#desc').html('Percentage change in population (2011-2016)');
-        map.fitBounds(bounds, {
-            padding: 30
-        });
-        map.setLayoutProperty('poplines3D', 'visibility', 'none');
+        // map.fitBounds(bounds, {
+        //     padding: 30
+        // });
         map.setLayoutProperty('poplabels', 'visibility', 'none');
         map.setPaintProperty('poppoints', 'circle-opacity', 0.85);
         map.setFilter('poplines', ["has", 'area']);
         map.setFilter('poppoints', ["has", 'area']);
         map.setFilter('poplabels', ["has", 'area']);
-        map.flyTo({
-            bearing: 0,
-            pitch: 0,
-            speed: 0.1
-        });
       } else {
-        map.fitBounds(bounds, {
-            padding: 60
-        });
         $('#desc').html('Heights represent actual population change (2011-2016)');
-        map.setLayoutProperty('poplines3D', 'visibility', 'visible');
         map.setLayoutProperty('poplabels', 'visibility', 'visible');
-        map.setPaintProperty('poppoints', 'circle-opacity', 0.2);
-        map.setFilter('poplines3D', ["==", 'area', data]);
         map.setFilter('poppoints', ["==", 'area', data]);
         map.setFilter('poplines', ["==", 'area', data]);
         map.setFilter('poplabels', ["==", 'area', data]);
-        map.flyTo({
-            bearing: -45,
-            pitch: 60,
-            speed: 0.1
-        });
       }
-      return false
-
-      function getZoom(width) {
-            if (width > 550) {
-                return 7;
-            }  else {
-                return 6;
-            }
-        };
+      return false;
     });
 
 </script>
