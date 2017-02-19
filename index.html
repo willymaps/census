@@ -2,17 +2,17 @@
 <html>
 <head>
 <meta charset='utf-8'/>
-<title>Vince Carter</title>
+<title>Census</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href='https://fonts.googleapis.com/css?family=Open+Sans|Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.32.1/mapbox-gl.css' rel='stylesheet' />
 <style>
 
 body {
     margin:0;
     padding:0;
-    background:#000;
+    background:#fff;
     -webkit-text-size-adjust: 100%;
 }
 
@@ -41,50 +41,61 @@ canvas:focus {
     color: #555;
 }
 
+.mapboxgl-popup {
+  max-width: 400px;
+  font: 12px/20px Open Sans, Arial, Helvetica, sans-serif;
+}
+
+.mapboxgl-popup h3{
+    margin-top: 0px;
+  margin-bottom: 2px;
+}
+
+#popup {
+    color:#555;
+}
+
+#mainpoint {
+    font-size:30px;
+    font-weight: bold;
+    text-align: center;
+    margin:5px;
+    margin-bottom: 10px;
+}
+
+#place {
+    font-size:10px;
+    color:#999;
+    line-height: 12px;
+}
+
 #header {
     font-family:Open Sans, Arial, Helvetica, sans-serif;
     font-size:12px;
-    color:#fff;
+    color:#555;
     background:rgba(255,255,255,0);
     padding:10px;
     margin:auto;
     display:block;
-    max-width:550px;
+    max-width:1000px;
     text-align: center;
 }
 
-#header div {
+/*#header div {
     display:inline-block;
     vertical-align: middle;
-}
-
-#header span {
-    font-size:9px;
-    font-weight:bold;
-    vertical-align: top;
-    margin-left: 2px;
-}
+}*/
 
 #headtext {
-    margin-left: 60px;
     font-size: 20px;
     line-height: 23px;
-    max-width: 186px;
     margin-bottom: 10px;
 }
 
-#logo {
-    position:absolute;
-    width:50px;
-}
-
-#logo img{
-    width:100%;
-}
-
 #desc {
-    margin-top:5px;
     max-width: 404px;
+    display: block;
+    margin: auto;
 }
 
 /*NOTES*/
@@ -111,102 +122,43 @@ canvas:focus {
 
 /*BUTTONS*/
 
-.shottoggles, .playertoggles {
+.prtoggles {
     text-align: center;
-    padding:10px 0;
+    padding:10px;
     margin:auto;
     display:block;
 }
 
-.shottoggles div, .playertoggles div {
+.prtoggles div {
     font-family:Open Sans, Arial, Helvetica, sans-serif;
     font-size: 10px;
+    font-weight: bold;
     color:#555;
     display: inline-block;
-    width: 85px;
+    width: 100px;
     padding: 7px;
+    margin-bottom: 3px;
     line-height:12px;
     border-radius: 2px;
+    border: 1px solid #d3d3d3;
     background:#fff;
     text-align: center;
     box-shadow: 0 2px 4px rgba(255,255,255,0.1);
 }
 
-.shottoggles div:hover, .playertoggles div:hover {
+.prtoggles div:hover {
     opacity:1;
-    background:#d3d3d3;
+    background:#efefef;
     cursor: pointer;
 }
 
-.shottoggles div.active, .playertoggles div.active {
+.prtoggles div.active {
     opacity:1;
-    background:#000;
+    background:#fff;
     cursor: pointer;
-    color:#FFF;
     border:1px solid #555;
     pointer-events:none;
 }
-
-/*LEGEND*/
-
-#legend {
-    text-align: center;
-    display:block;
-    margin: 10px auto;
-}
-
-#legend span {
-    border-radius:10px;
-    background:#FFF;
-    display: inline-block;
-    width:10px;
-    height:10px;
-    margin-right: 5px;
-}
-
-#legend label {
-    vertical-align: top;
-    font-size:10px;
-    margin-right: 10px;
-}
-
-/*NEWLEGEND*/
-
-#newlegend {
-    font-family:Open Sans, Arial, Helvetica, sans-serif;
-    display: block;
-    margin: auto;
-    z-index: 3;
-    background-color: rgba(255,255,255,0);
-    width:125px;
-    padding: 0px;
-    padding-bottom: 25px;
-    font-size: 12px;
-    border-radius:10px;
-      }
-
-.newlegend label {
-    display:block;
-    float:left;
-    height:15px;
-    margin-bottom: 3px;
-    margin-right: 70px;
-    margin-left: 1px;
-    text-align:center;
-    font-size:9px;
-    color:#808080;
-      }
-
-.newlegend span {
-    opacity:0.8;
-    display:block;
-    float:left;
-    height:15px;
-    width:19px;
-    text-align:center;
-    font-size:6px;
-    color:#808080;
-      }
 
 /*CIRCLEGEND*/
 
@@ -294,8 +246,9 @@ canvas:focus {
     #circlegendtwo {
         width: 107px;
     }
-    .shottoggles div, .playertoggles div {
-        width:51px;
+    .prtoggles div {
+        width: 130px;
+        padding: 10px;
     }
 }
 
@@ -303,72 +256,32 @@ canvas:focus {
 </head>
 <body>
 <div id="header">
-    <div id="logo"><img src="vince-01.png" alt=""></div>
-    <div id="headtext">A look at every Vince Carter<span style="color:#888">15</span> shot as a Toronto Raptor</div><br>
-    <div id="legend">
-            <span style="background:#de2d26"></span><label>Made shot</label>
-            <span style="background:#756bb1"></span><label>Missed shot</label>
+    <div id="headtext">Testing... A look at Canada's changing population</div>
+    <div id="desc">
+            Percentage change in population (2011-2016)
     </div>
-    <div id="newlegend" style="display:none">
-        <nav class='newlegend clearfix'>
-          <label id="onelabel">less</label>
-          <label id="twolabel" style="margin-right:0px">more</label>
-          <span id="onespan" style='height:12px;margin-left: 7px;margin-top: 8px;'></span>
-          <span id="twospan" style='height:14px;margin-top: 6px;'></span>
-          <span id="threespan" style='height:16px;margin-top: 4px;'></span>
-          <span id="fourspan" style='height:18px;margin-top: 2px;'></span>
-          <span id="fivespan" style='height:20px;'></span>
-        </nav>
-    </div>
-    <div id='circlegend' style="display:none">
-        <nav class='circlegend clearfix'>
-          <label id="onelabel" style="margin-right: 26px;">less shots</label>
-          <label id="twolabel" style="margin-right:0px">more shots</label>
-          <span style='width:12px;height:12px;margin-left: 7px;margin-top: 8px;'></span>
-          <span style='width:14px;height:14px;margin-top: 6px;'></span>
-          <span style='width:16px;height:16px;margin-top: 4px;'></span>
-          <span style='width:18px;height:18px;margin-top: 2px;'></span>
-          <span style='height:20px;'></span>
-        </nav>
-    </div>
-    <div id='circlegendtwo' style="display:none">
-        <nav class='circlegendtwo clearfix'>
-          <label id="onelabel" style="margin-right: 46px;">low %</label>
-          <label id="twolabel" style="margin-right:0px">high %</label>
-          <span style="opacity:0.2"></span>
-          <span style="opacity:0.4"></span>
-          <span style="opacity:0.6"></span>
-          <span style="opacity:0.8"></span>
-          <span style="opacity:1"></span>
-        </nav>
-    </div>
-    <div class="toggleholder">
-        <div id="desc">Choose a player:</div><br>
-        <div class="playertoggles">
-            <div id="playerbtn" data-id="vince" class="active">VINCE CARTER</div>
-            <div id="playerbtn" data-id="lowry">KYLE LOWRY</div>
-            <div id="playerbtn" data-id="derozan">DEMAR DEROZAN</div>
-            <div id="playerbtn" data-id="bosh">CHRIS BOSH</div>
+    <div id='circlegend'>
+            <nav class='circlegend clearfix'>
+              <label id="onelabel" style="margin-right: 7px;">small pop.</label>
+              <label id="twolabel" style="margin-right:18px">large pop.</label>
+              <span style='width:12px;height:12px;margin-left: 7px;margin-top: 8px;'></span>
+              <span style='width:14px;height:14px;margin-top: 6px;'></span>
+              <span style='width:16px;height:16px;margin-top: 4px;'></span>
+              <span style='width:18px;height:18px;margin-top: 2px;'></span>
+              <span style='height:20px;'></span>
+            </nav>
         </div>
-    </div>
     <div class="toggleholder">
-        <div id="desc">Compared to some other notable Toronto Raptors, Vince Carter was one of the most diverse players of the group.</div><br>
-        <div class="shottoggles">
-            <div id="mapbtn" data-id="shots" class="active">EVERY SHOT</div>
-            <div id="mapbtn" data-id="madeshots">SHOTS MADE</div>
-            <div id="mapbtn" data-id="missedshots">SHOTS MISSED</div>
-            <div id="mapbtn" data-id="percentmade">PER CENT MADE</div>
+        <div class="prtoggles">
+            <div id="prbtn" data-id="all" class="active">ALL</div>
+            <div id="prbtn" data-id="Ontario" style="color:#756BB1">ONTARIO</div>
+            <div id="prbtn" data-id="British Columbia" style="color:#31A354">BRITISH COLUMBIA</div>
+            <div id="prbtn" data-id="Quebec" style="color:#17BECF">QUEBEC</div>
+            <div id="prbtn" data-id="Alberta" style="color:#FF3030">ALBERTA</div>
+            <div id="prbtn" data-id="Prairies" style="color:#FDAE6B">PRAIRIES</div>
+            <div id="prbtn" data-id="Maritimes" style="color:#3182BD">MARITIMES</div>
+            <div id="prbtn" data-id="Territories" style="color:#E377C2">TERRITORIES</div>
         </div>
-    </div>
-    <div class="chartholder">
-        <div class="years">SEASONS</div>
-        <div class="years">TOTAL GAMES</div>
-        <div class="years">FIELD GOAL %</div>
-        <div class="years">POINTS PER GAME</div>
-        <div id="totyears" class="numbers">98'-05'</div>
-        <div id="totgames" class="numbers">403</div>
-        <div id="totperc" class="numbers">.446</div>
-        <div id="totpoints" class="numbers" style="border-right:0px">23.4</div>
     </div>
 </div>
 <div class="mapholder">
@@ -386,572 +299,396 @@ canvas:focus {
 mapboxgl.accessToken = 'pk.eyJ1Ijoid2lsbGlhbWJlbmRhdmlzIiwiYSI6IlVrb3BGVzQifQ.jeHxDCnpXXvAXKfAFEYG-A';
 
 var bounds = [
-    [-0.00515, -0.01216], // Southwest coordinates
-    [0.00674, 0.00532]  // Northeast coordinates
+    [0.0,-2.1],
+    [6.2,2.0]  // Northeast coordinates
 ];
 
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/empty-v8',
-    center: [-0.0005, 0.002],
-    zoom: 17,
-    minZoom:15.6,
-    maxZoom:18,
-    pitch: 50,
-    bearing: 90,
-    maxBounds: bounds
+    center: [0, 0],
+    minZoom:4,
+    maxZoom:9
 });
 
 map.scrollZoom.disable();
 
-window.addEventListener('load', function(event){
-    var width = document.documentElement.clientWidth;
-    if (width > 550) {
-        map.setZoom(17);
-    }  else {
-        map.setZoom(16);
-    }
-});
-
 map.on('load', function() {
 
-    map.addSource("netData", {
+    map.fitBounds(bounds, {
+            padding: 30
+        });
+
+    // ADD GRID
+    map.addSource("gridData", {
         'type': 'geojson',
-        'data': 'net.geojson'
+        'data': 'grid.geojson'
     });
 
     map.addLayer({
-        'id': 'net',
-        'type': 'fill-extrusion',
-        'source': 'netData',
-        'paint': {
-            'fill-extrusion-color': {
-                'property': 'color',
-                'type': 'identity'
-            },
-            'fill-extrusion-height': {
-                'property': 'elevation',
-                'type': 'identity'
-            },
-            'fill-extrusion-base': {
-                'property': 'frombase',
-                'type': 'identity'
-            }
-        }
-    });
-
-// COURT OUTLINE
-
-    map.addSource('court', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.6kevndwh'
-    });
-    map.addLayer({
-        "id": "court",
+        "id": "gridlines",
         "type": "line",
-        "source": "court",
-        "source-layer": "courtbounds-9hbb7f",
+        "source": "gridData",
         "layout": {
             "line-join": "round",
             "line-cap": "round"
         },
         "paint": {
-            "line-color": "#fff",
-            "line-width": 1.5
+            "line-width": 0.5,
+            "line-blur": 1,
+            "line-color": "#555"
         }
     });
 
-// PLAYER SHOTS
-
-    // CARTER
-    map.addSource('vinceshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.a6xtpgmm'
+    // ADD GRID LABELS
+    map.addSource("gridLabels", {
+        'type': 'geojson',
+        'data': 'grid_labels.geojson'
     });
+
     map.addLayer({
-        "id": "vinceshots",
+        "id": "gridlabels",
+        "type": "symbol",
+        "source": "gridLabels",
+        "layout": {
+            "text-field": "{name}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-size": 10,
+            "text-offset": [-0.3, 0 ],
+            "text-anchor": "right"
+        },
+        "paint": {
+            "text-color": "#555"
+        }
+    });
+
+    // ADD LINES
+    map.addSource("lineData", {
+        'type': 'geojson',
+        'data': 'lines.geojson'
+    });
+
+    map.addLayer({
+        "id": "poplines3D",
+        "type": "fill-extrusion",
+        "source": "lineData",
+        'layout': {
+            visibility: 'none'
+        },
+        "paint": styleLine3D()
+    });
+
+    map.addLayer({
+        "id": "poplines",
+        "type": "line",
+        "source": "lineData",
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": styleLine() 
+    });
+
+    // ADD POINTS
+    map.addSource("popData", {
+        'type': 'geojson',
+        'data': 'popchange.geojson'
+    });
+
+    map.addLayer({
+        "id": "poppoints",
         "type": "circle",
-        "source": "vinceshots",
-        "source-layer": "vince_carter-74uplm",
-        "paint": styleShots()
+        "source": "popData",
+        "layout": {},
+        "paint": stylePop()
+        // "paint": stylePop()
     });
 
-    // LOWRY
-    map.addSource('lowryshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.3t4eh3uy'
-    });
+    // STYLE POINTLABELS
     map.addLayer({
-        "id": "lowryshots",
-        "type": "circle",
-        "source": "lowryshots",
-        "source-layer": "kyle_lowry-11bnwq",
-        'layout': {
-            'visibility': 'none'
+        "id": "poplabels",
+        "type": "symbol",
+        "source": "popData",
+        "layout": {
+            "visibility": "none",
+            "text-field": "{name}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-size": 10,
+            "text-offset": [0, 1 ],
+            "text-anchor": "top"
         },
-        "paint": styleShots()
+        "paint": {
+            "text-color": "#555"
+        }
     });
 
-    // DEROZAN
-    map.addSource('derozanshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.5fq3isjq'
-    });
-    map.addLayer({
-        "id": "derozanshots",
-        "type": "circle",
-        "source": "derozanshots",
-        "source-layer": "derozan-3gjam7",
-        'layout': {
-            'visibility': 'none'
-        },
-        "paint": styleShots()
-    });
+    // var colorStops = [
 
-    // BOSH
-    map.addSource('boshshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.6p6jp4di'
-    });
-    map.addLayer({
-        "id": "boshshots",
-        "type": "circle",
-        "source": "boshshots",
-        "source-layer": "chris_bosh-9n74qr",
-        'layout': {
-            'visibility': 'none'
-        },
-        "paint": styleShots()
-    });
+    //                 ["Newfoundland and Labrador", "#3182BD"],
+    //                 ["Prince Edward Island", "#3182BD"],
+    //                 ["Nova Scotia", "#3182BD"],
+    //                 ["New Brunswick", "#3182BD"],
 
+    //                 ["British Columbia", "#31A354"],
 
-// 3D SHOTS
+    //                 ["Manitoba", "#FDAE6B"],
+    //                 ["Saskatchewan", "#FDAE6B"],
 
-    // VINCE
-    map.addSource('vincemadeshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.53yk63o3'
-    });
+    //                 ["Alberta", "#E7BA52"],
 
-    map.addLayer({
-        "id": "vincemadeshots",
-        "type": "fill-extrusion",
-        "source": "vincemadeshots",
-        "source-layer": "vince_madegrid-acxxdj",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMade()
-    });
+    //                 ["Ontario", "#756BB1"],
 
-    map.addSource('vincemissedshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.17aw5th5'
-    });
+    //                 ["Quebec", "#17BECF"],
 
-    map.addLayer({
-        "id": "vincemissedshots",
-        "type": "fill-extrusion",
-        "source": "vincemissedshots",
-        "source-layer": "vince_missedgrid-09swok",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMissed()
-    });
+    //                 ["Yukon", "#E377C2"],
+    //                 ["Northwest Territories", "#E377C2"],
+    //                 ["Nunavut", "#E377C2"]
+                    
+    //             ];
 
-    // DEROZAN
-    map.addSource('derozanmadeshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.8k50cm1b'
-    });
+    function calcCount(p) {
+        var scaleFactor = 0.05;
+        var area = p * scaleFactor;
+          return Math.sqrt(area/Math.PI)*2;
+    }
 
-    map.addLayer({
-        "id": "derozanmadeshots",
-        "type": "fill-extrusion",
-        "source": "derozanmadeshots",
-        "source-layer": "derozan_made_grid-54gnj5",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMade()
-    });
-
-    map.addSource('derozanmissedshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.c0uur62p'
-    });
-
-    map.addLayer({
-        "id": "derozanmissedshots",
-        "type": "fill-extrusion",
-        "source": "derozanmissedshots",
-        "source-layer": "derozan_missed_grid-24nvpu",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMissed()
-    });
-
-    // LOWRY
-    map.addSource('lowrymadeshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.1lb501ka'
-    });
-
-    map.addLayer({
-        "id": "lowrymadeshots",
-        "type": "fill-extrusion",
-        "source": "lowrymadeshots",
-        "source-layer": "lowry_made_grid-96euj6",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMade()
-    });
-
-    map.addSource('lowrymissedshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.2280u3sp'
-    });
-
-    map.addLayer({
-        "id": "lowrymissedshots",
-        "type": "fill-extrusion",
-        "source": "lowrymissedshots",
-        "source-layer": "lowry_missed_grid-d4eqid",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMissed()
-    });
-
-    // BOSH
-    map.addSource('boshmadeshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.1besrtb9'
-    });
-
-    map.addLayer({
-        "id": "boshmadeshots",
-        "type": "fill-extrusion",
-        "source": "boshmadeshots",
-        "source-layer": "bosh_made_grid-29oq08",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMade()
-    });
-
-    map.addSource('boshmissedshots', {
-        type: 'vector',
-        url: 'mapbox://williambendavis.2pxgd4zn'
-    });
-
-    map.addLayer({
-        "id": "boshmissedshots",
-        "type": "fill-extrusion",
-        "source": "boshmissedshots",
-        "source-layer": "bosh_missed_grid-13u2g6",
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': styleMissed()
-    });
-
-// PERCENT MADE
-
-        // CARTER
-        map.addSource('vincepercentmade', {
-            type: 'vector',
-            url: 'mapbox://williambendavis.2txrrssa'
-        });
-
-        map.addLayer({
-            "id": "vincepercentmade",
-            "type": "circle",
-            "source": "vincepercentmade",
-            "source-layer": "vince_percentmade_edit-9y9jbd",
-            'layout': {
-                'visibility': 'none'
-            },
-            'paint': stylePercent()
-        });
-
-        // LOWRY
-        map.addSource('lowrypercentmade', {
-            type: 'vector',
-            url: 'mapbox://williambendavis.8gi20rbx'
-        });
-
-        map.addLayer({
-            "id": "lowrypercentmade",
-            "type": "circle",
-            "source": "lowrypercentmade",
-            "source-layer": "lowry_percent-adubsm",
-            'layout': {
-                'visibility': 'none'
-            },
-            'paint': stylePercent()
-        });
-
-        // DEROZAN
-        map.addSource('derozanpercentmade', {
-            type: 'vector',
-            url: 'mapbox://williambendavis.0og8ktgq'
-        });
-
-        map.addLayer({
-            "id": "derozanpercentmade",
-            "type": "circle",
-            "source": "derozanpercentmade",
-            "source-layer": "derozanpercentedit-aps9wo",
-            'layout': {
-                'visibility': 'none'
-            },
-            'paint': stylePercent()
-        });
-
-        // BOSH
-        map.addSource('boshpercentmade', {
-            type: 'vector',
-            url: 'mapbox://williambendavis.d6hztebd'
-        });
-
-        map.addLayer({
-            "id": "boshpercentmade",
-            "type": "circle",
-            "source": "boshpercentmade",
-            "source-layer": "boshpercentedit-bhgn0c",
-            'layout': {
-                'visibility': 'none'
-            },
-            'paint': stylePercent()
-        });
-
-    function styleShots() {
+    function stylePop() {
         return {
-            "circle-radius": 2.2,
+            "circle-radius": {
+                    property: 'pop_2016',
+                    base: 2,
+                    type: 'interval',
+                    stops: [
+                        [10000, 4],
+                        [50000, 6],
+                        [100000, 8],
+                        [500000, 10],
+                        [1000000, 12],
+                    ]
+                },
+            "circle-opacity": 0.85,
+            "circle-stroke-color": "#FFFFFF",
+            "circle-stroke-width": 0.2,
             "circle-color": {
-                "property": "Field11",
-                "type": "categorical",
-                "stops": [
-                    ["Made Shot", "#de2d26"],
-                    ["Missed Shot", "#756bb1"]
+                property: 'pr',
+                type: "categorical",
+                stops: [
+
+                    ["Newfoundland and Labrador", "#3182BD"],
+                    ["Prince Edward Island", "#3182BD"],
+                    ["Nova Scotia", "#3182BD"],
+                    ["New Brunswick", "#3182BD"],
+
+                    ["British Columbia", "#31A354"],
+
+                    ["Manitoba", "#FDAE6B"],
+                    ["Saskatchewan", "#FDAE6B"],
+
+                    ["Alberta", "#FF3030"],
+
+                    ["Ontario", "#756BB1"],
+
+                    ["Quebec", "#17BECF"],
+
+                    ["Yukon", "#E377C2"],
+                    ["Northwest Territories", "#E377C2"],
+                    ["Nunavut", "#E377C2"]
+                    
                 ]
+                
             }
         }
     }
 
-    function styleMade() {
-          return {
-            'fill-extrusion-color': {
-                "property": "madecount",
-                "type": "interval",
-                "stops": [
-                    [1, "#fee5d9"],
-                    [2, "#fcae91"],
-                    [3, "#fb6a4a"],
-                    [4, "#de2d26"],
-                    [5, "#a50f15"]
-                ]
-            },
-            'fill-extrusion-height': {
-                'property': 'height',
-                'type': 'identity'
-            },
-            'fill-extrusion-opacity': 0.85
-        }
-      }
+    function styleLine() {
+        return {
+            "line-width": 1.5,
+            "line-blur":1,
+            "line-color": {
+                property: 'pr',
+                type: "categorical",
+                stops: [
 
-    function styleMissed() {
-          return {
-            'fill-extrusion-color': {
-                "property": "misscount",
-                "type": "interval",
-                "stops": [
-                    [1, "#f2f0f7"],
-                    [2, "#cbc9e2"],
-                    [3, "#9e9ac8"],
-                    [4, "#756bb1"],
-                    [5, "#54278f"]
-                ]
-            },
-            'fill-extrusion-height': {
-                'property': 'height',
-                'type': 'identity'
-            },
-            'fill-extrusion-opacity': 0.85
-        }
-      }
+                    ["Newfoundland and Labrador", "#3182BD"],
+                    ["Prince Edward Island", "#3182BD"],
+                    ["Nova Scotia", "#3182BD"],
+                    ["New Brunswick", "#3182BD"],
 
-    function stylePercent() {
-          return {
-            "circle-radius": {
-                'property': "total",
-                'type': "identity"
-            },
-            "circle-color": "#fb6a4a",
-            "circle-opacity": {
-                "property": "percent",
-                "type": "identity"
+                    ["British Columbia", "#31A354"],
+
+                    ["Manitoba", "#FDAE6B"],
+                    ["Saskatchewan", "#FDAE6B"],
+
+                    ["Alberta", "#FF3030"],
+
+                    ["Ontario", "#756BB1"],
+
+                    ["Quebec", "#17BECF"],
+
+                    ["Yukon", "#E377C2"],
+                    ["Northwest Territories", "#E377C2"]
+                    
+                ]
+                
             }
+        }
+    }
+
+    function styleLine3D() {
+          return {
+            'fill-extrusion-color': {
+                property: 'pr',
+                type: "categorical",
+                stops: [
+
+                    ["Newfoundland and Labrador", "#3182BD"],
+                    ["Prince Edward Island", "#3182BD"],
+                    ["Nova Scotia", "#3182BD"],
+                    ["New Brunswick", "#3182BD"],
+
+                    ["British Columbia", "#31A354"],
+
+                    ["Manitoba", "#FDAE6B"],
+                    ["Saskatchewan", "#FDAE6B"],
+
+                    ["Alberta", "#FF3030"],
+
+                    ["Ontario", "#756BB1"],
+
+                    ["Quebec", "#17BECF"],
+
+                    ["Yukon", "#E377C2"],
+                    ["Northwest Territories", "#E377C2"]
+                    
+                ]
+                
+            },
+            'fill-extrusion-height': {
+                'property': 'whole_chg',
+                'type': 'identity'
+            },
+            'fill-extrusion-opacity': 0.5
         }
       }
 
 });
 
-$('.playertoggles div').click(function() {
-    clearLayers();
-      $('.playertoggles div').removeClass('active');
+var popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+
+map.on('mousemove', function(e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['poppoints'] });
+    var feature = features[0];
+
+    map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+
+        // if the features have no info, return nothing
+    if (!features.length) {
+        popup.remove();
+        return;
+    }
+
+    // Populate the popup and set its coordinates
+    // based on the feature found
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function getColor(p) {
+      return p === "Ontario" ? '#756BB1' :
+             p === "Quebec" ? '#17BECF' :
+             p === "Alberta" ? '#FF3030' :
+             p === "British Columbia" ? '#31A354' :
+             p === "Maritimes" ? '#3182BD' :
+             p === "Territories" ? '#E377C2' :
+             p === "Prairies" ? '#FDAE6B' :
+             '#FFF';
+    }
+
+    popup.setLngLat(feature.geometry.coordinates)
+        .setHTML('<div id="popup" class="popup" style="z-index: 10;">' +
+            '<div id="place">' + feature.properties['name'] + ",</div>" +
+            '<div id="place">' + feature.properties['pr'] + "</div>" +
+            '<h3>Percent Change</h3>' +
+            '<div id="mainpoint" style="color:' + getColor(feature.properties['area']) + '">' + feature.properties['pop_chg'] + '%' + " </div>" +
+            '<div id="number"> 2016:<b> ' + numberWithCommas(feature.properties['pop_2016']) + " </b></div>" +
+            '<div id="number"> 2011:<b> ' + numberWithCommas(feature.properties['pop_2011']) + " </b></div>" + '</div>')
+        .addTo(map);
+});
+
+map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['poppoints'] });
+    
+    if (features.length) {
+        map.setLayoutProperty('poplabels', 'visibility', 'visible');
+        map.flyTo({
+            center: features[0].geometry.coordinates,
+            zoom:9
+        });
+    } else {
+        map.setLayoutProperty('poplabels', 'visibility', 'none');
+        map.fitBounds(bounds, {
+            padding: 30
+        });
+    }
+});
+
+$('.prtoggles div').click(function() {
+
+      var width = document.documentElement.clientWidth;
+
+
+      $('.prtoggles div').removeClass('active');
       $(this).addClass('active');
       var data = $(this).attr('data-id');
 
-          if (data === 'vince') {
-            $('#totyears').html('98&#39-05&#39');
-            $('#totgames').html('403');
-            $('#totperc').html('.446');
-            $('#totpoints').html('23.4');
-          } else if (data === 'lowry') {
-            $('#totyears').html('12&#39-17&#39');
-            $('#totgames').html('312');
-            $('#totperc').html('.418');
-            $('#totpoints').html('17.5');
-          } else if (data === 'derozan') {
-            $('#totyears').html('09&#39-17&#39');
-            $('#totgames').html('539');
-            $('#totperc').html('.444');
-            $('#totpoints').html('18.5');
-          } else {
-            $('#totyears').html('03&#39-10&#39');
-            $('#totgames').html('509');
-            $('#totperc').html('.492');
-            $('#totpoints').html('20.2');
-          }
-
-        $('.shottoggles div').each(function(){
-            var shotData = (data + $(this).attr('data-id'))
-            if($(this).hasClass('active')) {
-                map.setLayoutProperty(shotData, 'visibility', 'visible');
-            }
+      if (data === 'all') {
+        $('#desc').html('Percentage change in population (2011-2016)');
+        map.fitBounds(bounds, {
+            padding: 30
         });
+        map.setLayoutProperty('poplines3D', 'visibility', 'none');
+        map.setLayoutProperty('poplabels', 'visibility', 'none');
+        map.setPaintProperty('poppoints', 'circle-opacity', 0.85);
+        map.setFilter('poplines', ["has", 'area']);
+        map.setFilter('poppoints', ["has", 'area']);
+        map.setFilter('poplabels', ["has", 'area']);
+        map.flyTo({
+            bearing: 0,
+            pitch: 0,
+            speed: 0.1
+        });
+      } else {
+        map.fitBounds(bounds, {
+            padding: 60
+        });
+        $('#desc').html('Heights represent actual population change (2011-2016)');
+        map.setLayoutProperty('poplines3D', 'visibility', 'visible');
+        map.setLayoutProperty('poplabels', 'visibility', 'visible');
+        map.setPaintProperty('poppoints', 'circle-opacity', 0.2);
+        map.setFilter('poplines3D', ["==", 'area', data]);
+        map.setFilter('poppoints', ["==", 'area', data]);
+        map.setFilter('poplines', ["==", 'area', data]);
+        map.setFilter('poplabels', ["==", 'area', data]);
+        map.flyTo({
+            bearing: -45,
+            pitch: 60,
+            speed: 0.1
+        });
+      }
+      return false
+
+      function getZoom(width) {
+            if (width > 550) {
+                return 7;
+            }  else {
+                return 6;
+            }
+        };
     });
-
-
-$('.shottoggles div').click(function() {
-    clearLayers();
-
-    $('.shottoggles div').removeClass('active');
-    $(this).addClass('active');
-    var data = $(this).attr('data-id');
-        getCamera(data);
-
-        $('.playertoggles div').each(function(index){
-            console.log( index + ": " + $( this ).text() );
-            if ($(this).hasClass('active')) {
-                var shotData = ($(this).attr('data-id') + data)
-                map.setLayoutProperty(shotData, 'visibility', 'visible');
-            }
-        });
-});
-
-function getCamera(data) {
-    var width = document.documentElement.clientWidth;
-
-    if (data === 'madeshots') {
-        $('#newlegend').css('display', 'block');
-            $('#onespan').css('background', '#fee5d9');
-            $('#twospan').css('background', '#fdc3a7');
-            $('#threespan').css('background', '#fb6a4a');
-            $('#fourspan').css('background', '#de2d26');
-            $('#fivespan').css('background', '#a50f15');
-
-        $('#legend').css('display', 'none');
-        $('#circlegend').css('display', 'none');
-        $('#circlegendtwo').css('display', 'none');
-
-        map.flyTo({
-            center: [0, 0.0012],
-            zoom: getZoom(width),
-            bearing: 180,
-            pitch: 40,
-            speed: 0.1
-        });
-    } else if (data === 'missedshots') {
-        $('#newlegend').css('display', 'block');
-            $('#onespan').css('background', '#f2f0f7');
-            $('#twospan').css('background', '#cbc9e2');
-            $('#threespan').css('background', '#9e9ac8');
-            $('#fourspan').css('background', '#756bb1');
-            $('#fivespan').css('background', '#54278f');
-
-        $('#legend').css('display', 'none');
-        $('#circlegend').css('display', 'none');
-        $('#circlegendtwo').css('display', 'none');
-
-        map.flyTo({
-            center: [0, 0.0012],
-            zoom: getZoom(width),
-            bearing: 180,
-            pitch: 40,
-            speed: 0.1
-        });
-    } else if (data === 'percentmade') {
-        $('#legend').css('display', 'none');
-        $('#newlegend').css('display', 'none');
-        $('#circlegend').css('display', 'inline-block');
-        $('#circlegendtwo').css('display', 'inline-block');
-
-        map.flyTo({
-            center: [0, 0.001],
-            zoom: getZoom(width),
-            bearing: 180,
-            pitch: 2,
-            speed: 0.1
-        });
-    } else {
-        $('#legend').css('display', 'block');
-        $('#newlegend').css('display', 'none');
-        $('#circlegend').css('display', 'none');
-        $('#circlegendtwo').css('display', 'none');
-
-        map.flyTo({
-            center: [0, 0.001],
-            zoom: getZoom(width),
-            bearing: 180,
-            pitch: 20,
-            speed: 0.1
-        });
-    }
-    return false;
-
-    function getZoom(width) {
-        if (width > 550) {
-            return 17.2;
-        }  else {
-            return 15.6;
-        }
-    };
-};
-
-function clearLayers() {
-    map.setLayoutProperty('vincemissedshots', 'visibility', 'none');
-    map.setLayoutProperty('vinceshots', 'visibility', 'none');
-    map.setLayoutProperty('vincemadeshots', 'visibility', 'none');
-    map.setLayoutProperty('vincepercentmade', 'visibility', 'none');
-    map.setLayoutProperty('lowrymissedshots', 'visibility', 'none');
-    map.setLayoutProperty('lowryshots', 'visibility', 'none');
-    map.setLayoutProperty('lowrymadeshots', 'visibility', 'none');
-    map.setLayoutProperty('lowrypercentmade', 'visibility', 'none');
-    map.setLayoutProperty('derozanmissedshots', 'visibility', 'none');
-    map.setLayoutProperty('derozanshots', 'visibility', 'none');
-    map.setLayoutProperty('derozanmadeshots', 'visibility', 'none');
-    map.setLayoutProperty('derozanpercentmade', 'visibility', 'none');
-    map.setLayoutProperty('boshmissedshots', 'visibility', 'none');
-    map.setLayoutProperty('boshshots', 'visibility', 'none');
-    map.setLayoutProperty('boshmadeshots', 'visibility', 'none');
-    map.setLayoutProperty('boshpercentmade', 'visibility', 'none');
-}
 
 </script>
 
