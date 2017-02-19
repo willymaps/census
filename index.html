@@ -21,7 +21,9 @@ body {
 }
 
 #map {
-    width: 100%;
+    width: 800px;
+    margin:auto;
+    display:block;
     height: 850px;
 }
 
@@ -260,20 +262,7 @@ canvas:focus {
 <body>
 <div id="header">
     <div id="headtext">Testing... A look at Canada's changing population</div>
-    <div id="desc">
-            Percentage change in population (2011-2016)
-    </div>
-<!--     <div id='circlegend'>
-            <nav class='circlegend clearfix'>
-              <label id="onelabel" style="margin-right: 7px;">small pop.</label>
-              <label id="twolabel" style="margin-right:18px">large pop.</label>
-              <span style='width:12px;height:12px;margin-left: 7px;margin-top: 8px;'></span>
-              <span style='width:14px;height:14px;margin-top: 6px;'></span>
-              <span style='width:16px;height:16px;margin-top: 4px;'></span>
-              <span style='width:18px;height:18px;margin-top: 2px;'></span>
-              <span style='height:20px;'></span>
-            </nav>
-        </div> -->
+    <div id="desc">Percentage change in population by Census agglomeration area or  (2011-2016)</div>
     <div class="toggleholder">
         <div class="prtoggles">
             <div id="prbtn" data-id="all" class="active">ALL</div>
@@ -321,7 +310,7 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/empty-v8',
     center: [3, 0],
     zoom: getZoom(width),
-    minZoom:4,
+    minZoom:5.5,
     maxZoom:9,
     bearing:-90
 });
@@ -330,11 +319,6 @@ map.scrollZoom.disable();
 map.dragPan.disable();
 
 map.on('load', function() {
-
-    // map.fitBounds(bounds, {
-    //         padding: 30,
-    //         bearing:45
-    //     });
 
     // ADD GRID
     map.addSource("gridData", {
@@ -376,7 +360,7 @@ map.on('load', function() {
             "text-anchor": "bottom"
         },
         "paint": {
-            "text-color": "#999"
+            "text-color": "#555"
         }
     });
 
@@ -440,30 +424,6 @@ map.on('load', function() {
         }
     });
 
-    // var colorStops = [
-
-    //                 ["Newfoundland and Labrador", "#3182BD"],
-    //                 ["Prince Edward Island", "#3182BD"],
-    //                 ["Nova Scotia", "#3182BD"],
-    //                 ["New Brunswick", "#3182BD"],
-
-    //                 ["British Columbia", "#31A354"],
-
-    //                 ["Manitoba", "#FDAE6B"],
-    //                 ["Saskatchewan", "#FDAE6B"],
-
-    //                 ["Alberta", "#E7BA52"],
-
-    //                 ["Ontario", "#756BB1"],
-
-    //                 ["Quebec", "#17BECF"],
-
-    //                 ["Yukon", "#E377C2"],
-    //                 ["Northwest Territories", "#E377C2"],
-    //                 ["Nunavut", "#E377C2"]
-                    
-    //             ];
-
     function stylePop() {
         return {
             "circle-radius": {
@@ -473,10 +433,6 @@ map.on('load', function() {
                     [10, 12]
                     ]
             },
-                        // [50000, 4],
-                        // [100000, 5],
-                        // [500000, 6],
-                        // [1000000, 7]
             "circle-opacity": 0.85,
             "circle-stroke-color": "#FFFFFF",
             "circle-stroke-width": 0.2,
@@ -514,6 +470,7 @@ map.on('load', function() {
     function styleLine() {
         return {
             "line-width": 1.5,
+            "line-opacity": 0.5,
             "line-blur":1,
             "line-color": {
                 property: 'pr',
@@ -596,14 +553,11 @@ map.on('mousemove', function(e) {
 
     map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
 
-        // if the features have no info, return nothing
     if (!features.length) {
         popup.remove();
         return;
     }
 
-    // Populate the popup and set its coordinates
-    // based on the feature found
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -660,27 +614,22 @@ $('.prtoggles div').click(function() {
             }
         };
 
-
       $('.prtoggles div').removeClass('active');
       $(this).addClass('active');
       var data = $(this).attr('data-id');
 
       if (data === 'all') {
-        $('#desc').html('Percentage change in population (2011-2016)');
-        // map.fitBounds(bounds, {
-        //     padding: 30
-        // });
         map.setLayoutProperty('poplabels', 'visibility', 'none');
-        map.setPaintProperty('poppoints', 'circle-opacity', 0.85);
         map.setFilter('poplines', ["has", 'area']);
         map.setFilter('poppoints', ["has", 'area']);
         map.setFilter('poplabels', ["has", 'area']);
+        map.setFilter('gridlabels', ["has", 'id']);
       } else {
-        $('#desc').html('Heights represent actual population change (2011-2016)');
         map.setLayoutProperty('poplabels', 'visibility', 'visible');
         map.setFilter('poppoints', ["==", 'area', data]);
         map.setFilter('poplines', ["==", 'area', data]);
         map.setFilter('poplabels', ["==", 'area', data]);
+        map.setFilter('gridlabels', ["<=", 'id', 9]);
       }
       return false;
     });
