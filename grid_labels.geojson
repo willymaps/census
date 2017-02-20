@@ -11,9 +11,8 @@
 { "type": "Feature", "properties": { "id": 7, "name": -10 }, "geometry": { "type": "Point", "coordinates": [ 0.0, -1.0 ] } },
 { "type": "Feature", "properties": { "id": 8, "name": -15 }, "geometry": { "type": "Point", "coordinates": [ 0.0, -1.5 ] } },
 { "type": "Feature", "properties": { "id": 9, "name": -20 }, "geometry": { "type": "Point", "coordinates": [ 0.0, -2.0 ] } },
-{ "type": "Feature", "properties": { "id": 10, "name": "Cambellton, QC lost the highest per cent of residents." }, "geometry": { "type": "Point", "coordinates": [ 0.4, -2.1 ] } },
+{ "type": "Feature", "properties": { "id": 10, "name": "Campbellton, QC lost the highest per cent of residents." }, "geometry": { "type": "Point", "coordinates": [ 0.4, -2.1 ] } },
 { "type": "Feature", "properties": { "id": 11, "name": "Alberta saw the greatest percentage increase in new residents." }, "geometry": { "type": "Point", "coordinates": [ 6.0, 2.1 ] } },
-{ "type": "Feature", "properties": { "id": 11, "name": "Thunder Bay, ON had 0% change over the 5 year period." }, "geometry": { "type": "Point", "coordinates": [ 1.5, 0.5 ] } }
+{ "type": "Feature", "properties": { "id": 11, "name": "Thunder Bay, ON almost had 0% change over the 5 year period." }, "geometry": { "type": "Point", "coordinates": [ 1.5, 0.5 ] } }
 ]
 }
-
