@@ -21,7 +21,8 @@ body {
 }
 
 #map {
-    width: 800px;
+    max-width: 800px;
+    width:100%;
     margin:auto;
     display:block;
     height: 850px;
@@ -538,6 +539,12 @@ map.on('load', function() {
         }
       }
 
+        if (width > 550) {
+            map.setFilter('gridlabels', ["has", 'id']);
+        } else {
+            map.setFilter('gridlabels', ["<=", 'id', 9]);
+        }
+
 });
 
 var popup = new mapboxgl.Popup({
@@ -617,12 +624,18 @@ $('.prtoggles div').click(function() {
       $(this).addClass('active');
       var data = $(this).attr('data-id');
 
-      if (data === 'all') {
+      if (data === 'all' && width > 550) {
         map.setLayoutProperty('poplabels', 'visibility', 'none');
         map.setFilter('poplines', ["has", 'area']);
         map.setFilter('poppoints', ["has", 'area']);
         map.setFilter('poplabels', ["has", 'area']);
         map.setFilter('gridlabels', ["has", 'id']);
+      } else if (data === 'all' && width < 550) {
+        map.setLayoutProperty('poplabels', 'visibility', 'none');
+        map.setFilter('poplines', ["has", 'area']);
+        map.setFilter('poppoints', ["has", 'area']);
+        map.setFilter('poplabels', ["has", 'area']);
+        map.setFilter('gridlabels', ["<=", 'id', 9]);
       } else {
         map.setLayoutProperty('poplabels', 'visibility', 'visible');
         map.setFilter('poppoints', ["==", 'area', data]);
