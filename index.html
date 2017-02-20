@@ -202,7 +202,7 @@ canvas:focus {
     <div id='map'></div>
 </div>
 <div class="mapnotes">
-  <p><strong>Source:</strong> <a href="http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/index-eng.cfm" target="blank">Statistics Canada, Mapbox</p>
+  <p><strong>Source:</strong> <a href="http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/index-eng.cfm" target="blank">Statistics Canada</p>
   <p><strong>By:</strong> <a href="http://www.mapto.ca/" target="blank">Bettermaps</a></p>
   <p>Code on <a href="https://github.com/willymaps/census" target="blank">GitHub</a></p>
 </div>
@@ -240,6 +240,7 @@ var map = new mapboxgl.Map({
 map.scrollZoom.disable();
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
+map.dragPan.disable();
 
 map.on('zoom', function() {
     if (map.getZoom() > 6.5) {
