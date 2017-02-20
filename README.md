@@ -7,7 +7,5 @@ Link to project: https://willymaps.github.io/census/
 
 ![screencap](http://i.imgur.com/Bik9s1a.png)
 
-To create this we used QGIS.
-
-A link to our 'still under construction' site: <a href="http://www.mapto.ca/about-1/" target="blank">Bettermaps</a>
+A link to the post: <a href="http://www.mapto.ca/maps/2017/2/20/census-gl" target="blank">Bettermaps</a>
 
