@@ -298,16 +298,6 @@ map.on('load', function() {
     });
 
     map.addLayer({
-        "id": "poplines3D",
-        "type": "fill-extrusion",
-        "source": "lineData",
-        'layout': {
-            visibility: 'none'
-        },
-        "paint": styleLine3D()
-    });
-
-    map.addLayer({
         "id": "poplines",
         "type": "line",
         "source": "lineData",
@@ -429,47 +419,11 @@ map.on('load', function() {
         }
     }
 
-    function styleLine3D() {
-          return {
-            'fill-extrusion-color': {
-                property: 'pr',
-                type: "categorical",
-                stops: [
-
-                    ["Newfoundland and Labrador", "#3182BD"],
-                    ["Prince Edward Island", "#3182BD"],
-                    ["Nova Scotia", "#3182BD"],
-                    ["New Brunswick", "#3182BD"],
-
-                    ["British Columbia", "#31A354"],
-
-                    ["Manitoba", "#FDAE6B"],
-                    ["Saskatchewan", "#FDAE6B"],
-
-                    ["Alberta", "#FF3030"],
-
-                    ["Ontario", "#756BB1"],
-
-                    ["Quebec", "#17BECF"],
-
-                    ["Yukon", "#E377C2"],
-                    ["Northwest Territories", "#E377C2"]
-                    
-                ]
-                
-            },
-            'fill-extrusion-height': {
-                'property': 'whole_perc',
-                'type': 'identity'
-            },
-            'fill-extrusion-opacity': 0.5
-        }
-      }
-
         if (width > 680) {
             map.setFilter('gridlabels', ["has", 'id']);
         } else {
             map.setFilter('gridlabels', ["<=", 'id', 9]);
+            map.setLayoutProperty('poplabels', 'visibility', 'visible');
         }
 
 });
@@ -537,28 +491,18 @@ map.on('click', function(e) {
 
 $('.prtoggles div').click(function() {
 
-      // var width = document.documentElement.clientWidth;
-
-      // function getZoom(width) {
-      //       if (width > 550) {
-      //               return 7;
-      //       }  else {
-      //               return 6;
-      //       }
-      //   };
-
       $('.prtoggles div').removeClass('active');
       $(this).addClass('active');
       var data = $(this).attr('data-id');
 
-      if (data === 'all' && width > 550) {
+      if (data === 'all' && width > 680) {
         map.setLayoutProperty('poplabels', 'visibility', 'none');
         map.setFilter('poplines', ["has", 'area']);
         map.setFilter('poppoints', ["has", 'area']);
         map.setFilter('poplabels', ["has", 'area']);
         map.setFilter('gridlabels', ["has", 'id']);
-      } else if (data === 'all' && width < 550) {
-        map.setLayoutProperty('poplabels', 'visibility', 'none');
+      } else if (data === 'all' && width <= 680) {
+        map.setLayoutProperty('poplabels', 'visibility', 'visible');
         map.setFilter('poplines', ["has", 'area']);
         map.setFilter('poppoints', ["has", 'area']);
         map.setFilter('poplabels', ["has", 'area']);
