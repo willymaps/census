@@ -14,6 +14,12 @@ body {
     padding:0;
     background:#fff;
     -webkit-text-size-adjust: 100%;
+    font-family: Open Sans, Arial, Helvetica, sans-serif;
+}
+
+body a {
+    text-decoration: none;
+    color:#333;
 }
 
 .mapholder {
@@ -34,15 +40,6 @@ canvas:focus {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-
-/*.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
-    background-color: rgba(255,255,255,0); 
-    color:#555;
-    }
-
-.mapboxgl-ctrl-attrib a {
-    color: #555;
-}*/
 
 .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl {
     display: none;
@@ -88,6 +85,15 @@ canvas:focus {
     text-align: center;
 }
 
+#banner {
+    background: #FFF;
+    text-align: center;
+    padding:5px;
+    letter-spacing: .1em;
+    font-family: proxima-nova, Open Sans, Arial, Helvetica, sans-serif;
+    font-weight:500;
+}
+
 /*#header div {
     display:inline-block;
     vertical-align: middle;
@@ -97,6 +103,7 @@ canvas:focus {
     font-size: 20px;
     line-height: 23px;
     margin-bottom: 3px;
+    font-weight:bold;
 }
 
 #desc {
@@ -165,92 +172,11 @@ canvas:focus {
     pointer-events:none;
 }
 
-/*CIRCLEGEND*/
-
-#circlegend {
-    font-family:Open Sans, Arial, Helvetica, sans-serif;
-    display: inline-block;
-    margin: auto;
-    width:125px;
-    padding: 0px;
-    margin-right: 20px;
-      }
-
-#circlegend label, #circlegendtwo label {
-    display:inline-block;
-    height:15px;
-    text-align:center;
-    font-size:9px;
-    color:#808080;
-      }
-
-#circlegend span {
-    opacity:0.8;
-    display:block;
-    float:left;
-    border:1px solid #d3d3d3;
-    height:15px;
-    width:19px;
-    border-radius:30px;
-      }
-
-#circlegendtwo {
-    font-family:Open Sans, Arial, Helvetica, sans-serif;
-    display: inline-block;
-    margin: auto;
-    width:125px;
-    padding: 0px;
-      }
-
-#circlegendtwo span {
-    opacity:0.8;
-    display:inline-block;
-    height:5px;
-    width:20px;
-    background:#fb6a4a;
-    margin-left: -3px;
-      }
-
-/*CHART*/
-
-.chartholder {
-  font-family: Open Sans, Arial, Helvetica, sans-serif;
-  font-size:10px;
-  width: 100%;
-  max-width: 415px;
-  display: block;
-  margin:auto;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.chartholder div {
-    display:inline-block;
-    text-align: center;
-    width:24%;
-}
-
-.years {
-    font-family: Open Sans, Arial, Helvetica, sans-serif;
-    border:0px;
-    color:#999;
-    margin-bottom: 3px;
-}
-
-.numbers {
-  font-size:12px;
-  font-weight:bold;
-  color:#999;
-  border-right:1px dashed #888888;
-}
-
 @media (max-width:550px) {
     #map {
         height:430px;
     }
-    #circlegendtwo {
-        width: 107px;
-    }
+
     .prtoggles div {
         width: 100px;
         padding: 10px;
@@ -260,8 +186,9 @@ canvas:focus {
 </style>
 </head>
 <body>
+<a href="http://www.mapto.ca/" target="blank"><div id="banner">mapTO</div></a>
 <div id="header">
-    <div id="headtext">A look at Canada's changing population</div>
+    <div id="headtext">How every urban centre in Canada changed between census years</div>
     <div id="desc">Percentage change in population by Census Metropolitan Areas or Census Agglomerations (2011-2016).</div>
     <div class="toggleholder">
         <div class="prtoggles">
@@ -281,9 +208,9 @@ canvas:focus {
 </div>
 <div class="mapnotes">
   <p><strong>Note:</strong></p>
-  <p><strong>Source:</strong> Stats Can</p>
+  <p><strong>Source:</strong> Statistics Canada</p>
   <p><strong>By:</strong> <a href="http://www.mapto.ca/" target="blank">Bettermaps</a></p>
-  <p>Code on <a href="https://github.com/willymaps/cartershots" target="blank">GitHub</a></p>
+  <p>Code on <a href="https://github.com/willymaps/census" target="blank">GitHub</a></p>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
@@ -291,8 +218,8 @@ canvas:focus {
 mapboxgl.accessToken = 'pk.eyJ1Ijoid2lsbGlhbWJlbmRhdmlzIiwiYSI6IlVrb3BGVzQifQ.jeHxDCnpXXvAXKfAFEYG-A';
 
 var bounds = [
-    [0.0,-2.1],
-    [6.2,2.0]  // Northeast coordinates
+    [-1,-4],
+    [7,4]
 ];
 
 var width = document.documentElement.clientWidth;
@@ -310,13 +237,13 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/empty-v8',
     center: [3, 0],
     zoom: getZoom(width),
-    minZoom:5.5,
+    minZoom:4,
     maxZoom:9,
-    bearing:-90
+    bearing:-90,
+    maxBounds: bounds 
 });
 
 map.scrollZoom.disable();
-map.dragPan.disable();
 
 map.on('load', function() {
 
@@ -539,7 +466,7 @@ map.on('load', function() {
         }
       }
 
-        if (width > 550) {
+        if (width > 680) {
             map.setFilter('gridlabels', ["has", 'id']);
         } else {
             map.setFilter('gridlabels', ["<=", 'id', 9]);
@@ -610,15 +537,15 @@ map.on('click', function(e) {
 
 $('.prtoggles div').click(function() {
 
-      var width = document.documentElement.clientWidth;
+      // var width = document.documentElement.clientWidth;
 
-      function getZoom(width) {
-            if (width > 550) {
-                    return 7;
-            }  else {
-                    return 6;
-            }
-        };
+      // function getZoom(width) {
+      //       if (width > 550) {
+      //               return 7;
+      //       }  else {
+      //               return 6;
+      //       }
+      //   };
 
       $('.prtoggles div').removeClass('active');
       $(this).addClass('active');
