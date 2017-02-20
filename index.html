@@ -153,7 +153,6 @@ canvas:focus {
     margin-bottom: 3px;
     line-height:12px;
     border-radius: 2px;
-    border: 1px solid #d3d3d3;
     background:#fff;
     text-align: center;
     box-shadow: 0 2px 4px rgba(255,255,255,0.1);
@@ -178,7 +177,7 @@ canvas:focus {
     }
 
     .prtoggles div {
-        width: 100px;
+        width: 110px;
         padding: 10px;
     }
 }
@@ -192,7 +191,7 @@ canvas:focus {
     <div id="desc">Percentage change in population by Census Metropolitan Areas or Census Agglomerations (2011-2016).</div>
     <div class="toggleholder">
         <div class="prtoggles">
-            <div id="prbtn" data-id="all" class="active">ALL</div>
+            <div id="prbtn" data-id="all" style="background:#efefef" class="active">ALL</div>
             <div id="prbtn" data-id="Ontario" style="color:#756BB1;background:rgba(117,107,177,0.2)">ONTARIO</div>
             <div id="prbtn" data-id="British Columbia" style="color:#31A354;background:rgba(49,163,84,0.2)">BRITISH COLUMBIA</div>
             <div id="prbtn" data-id="Quebec" style="color:#17BECF;background:rgba(23,190,207,0.2)">QUEBEC</div>
@@ -357,13 +356,13 @@ map.on('load', function() {
             "circle-radius": {
                 base: 1.75,
                 stops: [
-                    [4, 2.3],
+                    [4, 2],
                     [10, 12]
                     ]
             },
             "circle-opacity": 0.85,
             "circle-stroke-color": "#FFFFFF",
-            "circle-stroke-width": 0.2,
+            "circle-stroke-width": 0.5,
             "circle-color": {
                 property: 'pr',
                 type: "categorical",
@@ -523,12 +522,12 @@ map.on('click', function(e) {
     
     if (features.length) {
         map.setLayoutProperty('poplabels', 'visibility', 'visible');
+        map.setFilter('gridlabels', ["<=", 'id', 9]);
         map.flyTo({
             center: features[0].geometry.coordinates,
             zoom:9
         });
     } else {
-        map.setLayoutProperty('poplabels', 'visibility', 'none');
         map.flyTo({
             center: [3, 0],
             zoom:getZoom(width)
