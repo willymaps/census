@@ -245,6 +245,14 @@ map.scrollZoom.disable();
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
 
+map.on('zoom', function() {
+    if (map.getZoom() > 6.5) {
+        map.dragPan.enable();
+    } else {
+        map.dragPan.disable();
+    }
+});
+
 map.on('load', function() {
 
     // ADD GRID
@@ -457,7 +465,7 @@ map.on('mousemove', function(e) {
              p === "Maritimes" ? '#3182BD' :
              p === "Territories" ? '#E377C2' :
              p === "Prairies" ? '#FDAE6B' :
-             '#FFF';
+             '#d3d3d3';
     }
 
     popup.setLngLat(feature.geometry.coordinates)
@@ -487,6 +495,7 @@ map.on('click', function(e) {
             zoom:getZoom(width)
         });
     }
+
 });
 
 $('.prtoggles div').click(function() {
