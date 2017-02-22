@@ -24,6 +24,9 @@ body a {
 
 .mapholder {
     display:block;
+    margin:auto;
+    position:relative;
+    max-width: 850px;
 }
 
 #map {
@@ -166,9 +169,42 @@ canvas:focus {
     pointer-events:none;
 }
 
+.arrow {
+    position: absolute;
+    top: 194px;
+    left: 48%;
+    width: 75px;
+}
+
+.arrowtxt {
+    position: relative;
+    font-size: 12px;
+    font-weight: bold;
+    right: 105px;
+    text-align: right;
+    top: 58px;
+    width: 100px;
+}
+
+.arrow img {
+    width:100%;
+    -moz-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
 @media (max-width:550px) {
     #map {
         height:430px;
+    }
+
+    .arrow {
+        display:none;
+    }
+
+    .mapholder {
+        margin-top:0px;
     }
 
     .prtoggles {
@@ -203,6 +239,11 @@ canvas:focus {
     </div>
 </div>
 <div class="mapholder">
+    <div class="arrow">
+    <div class="arrowtxt">
+        Try clicking one of the markers!
+    </div>
+    <img src="arrow.gif"></div>
     <div id='map'></div>
 </div>
 <div class="mapnotes">
@@ -244,6 +285,7 @@ var map = new mapboxgl.Map({
 map.scrollZoom.disable();
 map.dragRotate.disable();
 map.touchZoomRotate.disableRotation();
+map.doubleClickZoom.disable();
 map.dragPan.disable();
 
 map.on('zoom', function() {
@@ -484,6 +526,7 @@ map.on('mousemove', function(e) {
 
 map.on('click', function(e) {
     var features = map.queryRenderedFeatures(e.point, { layers: ['poppoints'] });
+    $('.arrow').fadeOut();
     
     if (features.length) {
         map.setLayoutProperty('poplabels', 'visibility', 'visible');
