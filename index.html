@@ -176,7 +176,7 @@ canvas:focus {
     }
 
     .prtoggles div {
-        width: 100px;
+        width: 92px;
         padding: 8px;
         font-size: 9px;
     }
@@ -206,7 +206,7 @@ canvas:focus {
     <div id='map'></div>
 </div>
 <div class="mapnotes">
-  <p><strong>Source:</strong> <a href="http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/index-eng.cfm" target="blank">Statistics Canada</p>
+  <p><strong>Sources:</strong> <a href="http://www12.statcan.gc.ca/census-recensement/2016/dp-pd/index-eng.cfm" target="blank">Statistics Canada, Mapbox</p>
   <p><strong>By:</strong> <a href="http://www.mapto.ca/" target="blank">Bettermaps</a></p>
   <p>Code on <a href="https://github.com/willymaps/census" target="blank">GitHub</a></p>
 </div>
@@ -476,7 +476,9 @@ map.on('mousemove', function(e) {
             '<h3>Per cent Change</h3>' +
             '<div id="mainpoint" style="color:' + getColor(feature.properties['area']) + '">' + feature.properties['pop_chg'] + '%' + " </div>" +
             '<div id="number"> 2016:<b> ' + numberWithCommas(feature.properties['pop_2016']) + " </b></div>" +
-            '<div id="number"> 2011:<b> ' + numberWithCommas(feature.properties['pop_2011']) + " </b></div>" + '</div>')
+            '<div id="number"> 2011:<b> ' + numberWithCommas(feature.properties['pop_2011']) + " </b></div>" +
+            '<div id="number"> Pop diff.:<b> ' + numberWithCommas(feature.properties['pop_2016'] - feature.properties['pop_2011']) + " </b></div>" +
+            '</div>')
         .addTo(map);
 });
 
