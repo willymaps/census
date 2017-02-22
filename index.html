@@ -526,9 +526,9 @@ map.on('mousemove', function(e) {
 
 map.on('click', function(e) {
     var features = map.queryRenderedFeatures(e.point, { layers: ['poppoints'] });
-    $('.arrow').fadeOut();
     
     if (features.length) {
+        $('.arrow').fadeOut();
         map.setLayoutProperty('poplabels', 'visibility', 'visible');
         map.setFilter('gridlabels', ["<=", 'id', 9]);
         map.flyTo({
